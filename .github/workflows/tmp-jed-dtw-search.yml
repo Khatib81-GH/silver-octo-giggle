@@ -1,0 +1,65 @@
+name: Temporary JED-DTW fare sweep
+
+on:
+  push:
+    branches:
+      - tmp/jed-dtw-search-20261012
+
+permissions:
+  contents: read
+
+jobs:
+  search:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Python search dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install requests fast-flights playwright beautifulsoup4 lxml
+          python -m playwright install --with-deps chromium
+
+      - name: Run PointsYeah award sweep
+        continue-on-error: true
+        run: node tmp_search/pointsyeah.mjs
+
+      - name: Run cash and Seats.aero sweep
+        continue-on-error: true
+        run: python tmp_search/cash_and_seats.py
+
+      - name: Package diagnostics
+        if: always()
+        run: |
+          python - <<'PY'
+          import json, pathlib
+          files = {}
+          for name in ['pointsyeah_raw.json','pointsyeah_filtered.json','cash_results.json','seats_aero_results.json']:
+              p = pathlib.Path(name)
+              files[name] = {'exists': p.exists(), 'size': p.stat().st_size if p.exists() else None}
+          pathlib.Path('manifest.json').write_text(json.dumps(files, indent=2))
+          print(json.dumps(files, indent=2))
+          PY
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jed-dtw-results
+          path: |
+            manifest.json
+            pointsyeah_raw.json
+            pointsyeah_filtered.json
+            cash_results.json
+            seats_aero_results.json
+          if-no-files-found: warn
+          retention-days: 1
