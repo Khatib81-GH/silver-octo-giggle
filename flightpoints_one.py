@@ -5,6 +5,7 @@ import json
 import traceback
 from pathlib import Path
 from mcp.client import Client
+from mcp.client.streamable_http import streamable_http_client
 from mcp.types import TextContent
 
 OUT=Path('results'); OUT.mkdir(exist_ok=True)
@@ -30,7 +31,8 @@ async def main():
       'programmes':'flyingblue,delta','alliances':'skyteam'
     }
     try:
-      async with Client(URL) as c:
+      transport=streamable_http_client(URL,max_sse_event_size=32*1024*1024)
+      async with Client(transport) as c:
         out['result']=unpack(await c.call_tool('search-flights',args))
       out['status']='ok'
     except Exception as e:
