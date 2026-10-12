@@ -5,16 +5,16 @@ on:
     branches:
       - tmp/jed-dtw-fares-20261012
     paths:
-      - pointhound_nodriver.py
+      - flightpoints_probe.py
       - .github/workflows/jed-dtw-fare-sweep.yml
 
 permissions:
   contents: read
 
 jobs:
-  pointhound-nodriver:
+  flightpoints-probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 8
     steps:
       - name: Check out branch
         uses: actions/checkout@v4
@@ -24,23 +24,23 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install Chrome transport
-        run: python -m pip install 'nodriver==0.50.3' 'websockets>=14,<15'
+      - name: Install MCP client
+        run: python -m pip install 'mcp==2.3.0'
 
-      - name: Probe Pointhound with undetected Chrome
+      - name: List Flightpoints tools
         id: probe
         continue-on-error: true
-        run: xvfb-run -a python pointhound_nodriver.py
+        run: python flightpoints_probe.py
 
       - name: Ensure results directory exists
         if: always()
         run: mkdir -p results && printf '%s\n' "step_outcome=${{ steps.probe.outcome }}" > results/workflow_status.txt
 
-      - name: Upload Pointhound probe
+      - name: Upload Flightpoints tool schema
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: pointhound-nodriver
+          name: flightpoints-tools
           path: results/
           if-no-files-found: warn
           retention-days: 3
