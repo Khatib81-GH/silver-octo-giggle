@@ -24,8 +24,8 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install current MCP client
-        run: python -m pip install --upgrade pip 'git+https://github.com/modelcontextprotocol/python-sdk.git'
+      - name: Install released MCP client
+        run: python -m pip install --upgrade pip 'mcp==2.3.0'
 
       - name: Query Flying Blue and SkyMiles independently in two date batches
         id: sweep
