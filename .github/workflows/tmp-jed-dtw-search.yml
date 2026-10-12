@@ -29,6 +29,7 @@ jobs:
           python -m pip install requests fast-flights playwright beautifulsoup4 lxml
           python -m playwright install --with-deps chromium
           npm install playwright
+          npx playwright install chromium
 
       - name: Run Google Flights SkyTeam cash sweep
         continue-on-error: true
