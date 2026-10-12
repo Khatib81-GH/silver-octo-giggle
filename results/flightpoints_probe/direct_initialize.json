@@ -1,0 +1,32 @@
+{
+  "status": 200,
+  "content_type": "text/event-stream",
+  "session_id": null,
+  "messages": [
+    {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "result": {
+        "protocolVersion": "2025-11-25",
+        "capabilities": {
+          "experimental": {},
+          "prompts": {
+            "listChanged": false
+          },
+          "resources": {
+            "subscribe": false,
+            "listChanged": false
+          },
+          "tools": {
+            "listChanged": false
+          }
+        },
+        "serverInfo": {
+          "name": "flightpoints-assistant",
+          "version": "1.30.0",
+          "websiteUrl": "https://mcp.flightpoints.com"
+        }
+      }
+    }
+  ]
+}
