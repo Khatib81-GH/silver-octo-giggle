@@ -1,0 +1,43 @@
+name: Temporary JED-DTW PointsYeah award retry
+
+on:
+  push:
+    branches:
+      - tmp/jed-dtw-fares-20261012
+    paths:
+      - .github/workflows/tmp-jed-dtw-awards-retry.yml
+
+permissions:
+  contents: read
+
+jobs:
+  pointsyeah-awards:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install PointsYeah client
+        run: |
+          git clone --depth=1 https://github.com/farzanariel/pointsyeah-api.git /tmp/pointsyeah-api
+          cd /tmp/pointsyeah-api
+          npm ci
+      - name: Search all dates in one award task
+        continue-on-error: true
+        run: /tmp/pointsyeah-api/node_modules/.bin/tsx scripts/tmp_pointsyeah_scan.ts
+      - name: Show compact result
+        if: always()
+        run: cat tmp_pointsyeah_programs.json 2>/dev/null || true
+      - name: Upload award source
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jed-dtw-pointsyeah-retry-20261225-20270105
+          path: |
+            tmp_pointsyeah_results.json
+            tmp_pointsyeah_programs.json
+            tmp_pointsyeah_progress.json
+          if-no-files-found: warn
+          retention-days: 1
