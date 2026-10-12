@@ -11,88 +11,44 @@ permissions:
 jobs:
   search:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
       - name: Install search dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install requests fast-flights playwright beautifulsoup4 lxml pyyaml
-          python -m playwright install --with-deps chromium
-          npm install playwright
-          npx playwright install chromium
-
-      - name: Run AwardTravelFinder agent search
+          python -m pip install requests fast-flights selectolax
+      - name: Run exact AwardTravelFinder daily sweep
         continue-on-error: true
-        run: python tmp_search/atf_search.py
-
-      - name: Run Google Flights SkyTeam cash sweep
+        run: python tmp_search/atf_daily.py
+      - name: Run defensive Google Flights cash sweep
         continue-on-error: true
-        run: |
-          python tmp_search/cash_and_seats.py
-          python tmp_search/cash_raw.py
-
-      - name: Run direct Delta SkyMiles sweep
-        continue-on-error: true
-        run: xvfb-run -a node tmp_search/delta_awards.mjs
-
-      - name: Probe Air France and KLM Flying Blue search
-        continue-on-error: true
-        run: xvfb-run -a node tmp_search/afklm_probe.mjs
-
-      - name: Run PointsYeah diagnostic
-        continue-on-error: true
-        run: node tmp_search/pointsyeah.mjs
-
+        run: python tmp_search/cash_raw.py
       - name: Package diagnostics
         if: always()
         run: |
           python - <<'PY'
           import json, pathlib
-          names = [
-            'atf_agent.json','atf_openapi.yaml','atf_registration_redacted.json','atf_endpoints.json','atf_results.json',
-            'cash_results.json','cash_raw_results.json','seats_aero_results.json','delta_awards.json',
-            'afklm_probe.json','pointsyeah_raw.json','pointsyeah_filtered.json',
-            'airfrance_reward.png','klm_reward.png','klm_alt.png'
-          ]
-          files = {}
+          names=['atf_daily_results.json','atf_daily_registration.json','cash_raw_results.json']
+          files={}
           for name in names:
-              p = pathlib.Path(name)
-              files[name] = {'exists': p.exists(), 'size': p.stat().st_size if p.exists() else None}
-          pathlib.Path('manifest.json').write_text(json.dumps(files, indent=2))
-          print(json.dumps(files, indent=2))
+              p=pathlib.Path(name)
+              files[name]={'exists':p.exists(),'size':p.stat().st_size if p.exists() else None}
+          pathlib.Path('manifest.json').write_text(json.dumps(files,indent=2))
+          print(json.dumps(files,indent=2))
           PY
-
       - name: Upload results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: jed-dtw-results
+          name: jed-dtw-focused-results
           path: |
             manifest.json
-            atf_agent.json
-            atf_openapi.yaml
-            atf_registration_redacted.json
-            atf_endpoints.json
-            atf_results.json
-            cash_results.json
+            atf_daily_results.json
+            atf_daily_registration.json
             cash_raw_results.json
-            seats_aero_results.json
-            delta_awards.json
-            afklm_probe.json
-            pointsyeah_raw.json
-            pointsyeah_filtered.json
-            airfrance_reward.png
-            klm_reward.png
-            klm_alt.png
           if-no-files-found: warn
           retention-days: 1
