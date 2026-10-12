@@ -6,6 +6,7 @@ on:
       - tmp/jed-dtw-fares-20261012
     paths:
       - fare_sweep.py
+      - fare_sweep_v2.py
       - .github/workflows/jed-dtw-fare-sweep.yml
 
 permissions:
@@ -30,7 +31,7 @@ jobs:
       - name: Run independent cash and award batches
         id: sweep
         continue-on-error: true
-        run: python fare_sweep.py
+        run: python fare_sweep_v2.py
 
       - name: Ensure results directory exists
         if: always()
