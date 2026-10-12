@@ -6,120 +6,68 @@ from __future__ import annotations
 import json
 from pathlib import Path
 from typing import Any
-
 import httpx
 
 OUT = Path("results/flightpoints_probe")
 OUT.mkdir(parents=True, exist_ok=True)
 URL = "https://mcp.flightpoints.com/mcp"
-PROTOCOL_VERSION = "2025-11-25"
 
 
 def parse_sse(text: str) -> list[Any]:
-    messages: list[Any] = []
+    out: list[Any] = []
     for block in text.replace("\r\n", "\n").split("\n\n"):
-        data_lines = []
-        for line in block.splitlines():
-            if line.startswith("data:"):
-                data_lines.append(line[5:].lstrip())
-        if not data_lines:
-            continue
-        data = "\n".join(data_lines)
-        try:
-            messages.append(json.loads(data))
-        except json.JSONDecodeError:
-            messages.append({"unparsed": data})
-    return messages
+        data = "\n".join(line[5:].lstrip() for line in block.splitlines() if line.startswith("data:"))
+        if data:
+            try:
+                out.append(json.loads(data))
+            except json.JSONDecodeError:
+                out.append({"unparsed": data})
+    return out
 
 
-def rpc_post(client: httpx.Client, payload: dict[str, Any], session_id: str | None = None) -> tuple[list[Any], str | None, str, int]:
-    headers = {
-        "content-type": "application/json",
-        "accept": "application/json, text/event-stream",
-    }
-    if session_id:
-        headers["mcp-session-id"] = session_id
+def post(client: httpx.Client, payload: dict[str, Any], sid: str | None = None):
+    headers = {"content-type": "application/json", "accept": "application/json, text/event-stream"}
+    if sid:
+        headers["mcp-session-id"] = sid
     with client.stream("POST", URL, headers=headers, json=payload, timeout=180.0) as response:
-        status = response.status_code
         response.raise_for_status()
-        new_session = response.headers.get("mcp-session-id") or session_id
-        content_type = response.headers.get("content-type", "")
-        chunks = []
-        for chunk in response.iter_text():
-            chunks.append(chunk)
-        text = "".join(chunks)
-    if "text/event-stream" in content_type:
-        return parse_sse(text), new_session, content_type, status
-    if not text.strip():
-        return [], new_session, content_type, status
-    return [json.loads(text)], new_session, content_type, status
+        sid = response.headers.get("mcp-session-id") or sid
+        ct = response.headers.get("content-type", "")
+        text = "".join(response.iter_text())
+        status = response.status_code
+    messages = parse_sse(text) if "text/event-stream" in ct else ([json.loads(text)] if text.strip() else [])
+    return messages, sid, ct, status
 
 
 def main() -> int:
     with httpx.Client(follow_redirects=True, headers={"user-agent": "flight-research/1.0"}) as client:
-        init_payload = {
-            "jsonrpc": "2.0",
-            "id": 1,
-            "method": "initialize",
-            "params": {
-                "protocolVersion": PROTOCOL_VERSION,
-                "capabilities": {},
-                "clientInfo": {"name": "flight-research", "version": "1.0"},
-            },
-        }
-        init_messages, session_id, init_ct, init_status = rpc_post(client, init_payload)
-        (OUT / "direct_initialize.json").write_text(json.dumps({
-            "status": init_status,
-            "content_type": init_ct,
-            "session_id": session_id,
-            "messages": init_messages,
-        }, indent=2))
-
-        notification = {
-            "jsonrpc": "2.0",
-            "method": "notifications/initialized",
-            "params": {},
-        }
-        notify_messages, session_id, notify_ct, notify_status = rpc_post(client, notification, session_id)
-        (OUT / "direct_initialized_notification.json").write_text(json.dumps({
-            "status": notify_status,
-            "content_type": notify_ct,
-            "messages": notify_messages,
-        }, indent=2))
+        init, sid, init_ct, init_status = post(client, {
+            "jsonrpc": "2.0", "id": 1, "method": "initialize",
+            "params": {"protocolVersion": "2025-11-25", "capabilities": {}, "clientInfo": {"name": "flight-research", "version": "1.0"}},
+        })
+        (OUT / "direct_initialize.json").write_text(json.dumps({"status": init_status, "content_type": init_ct, "session_id": sid, "messages": init}, indent=2))
+        post(client, {"jsonrpc": "2.0", "method": "notifications/initialized", "params": {}}, sid)
 
         args = {
             "origin": "JED",
             "destination": "DTW",
             "departure_date": "2026-12-25",
             "passengers": 1,
-            "cabin_class": "economy",
-            "minimum_seats": 1,
-            "only_direct": False,
-            "filter_cabin": "AR AM UX AF CI MU DL GA KQ KL KE ME SV SK RO VN VS MF",
-            "operating_carriers_exclude": False,
+            "cabin_class": "economy"
         }
-        call_payload = {
-            "jsonrpc": "2.0",
-            "id": 2,
-            "method": "tools/call",
+        messages, sid, ct, status = post(client, {
+            "jsonrpc": "2.0", "id": 2, "method": "tools/call",
             "params": {"name": "search-flights", "arguments": args},
-        }
-        call_messages, session_id, call_ct, call_status = rpc_post(client, call_payload, session_id)
-        raw = {
-            "status": call_status,
-            "content_type": call_ct,
-            "session_id": session_id,
-            "arguments": args,
-            "messages": call_messages,
-        }
-        (OUT / "direct_valid_call.json").write_text(json.dumps(raw, indent=2))
-        print(json.dumps({
-            "status": call_status,
-            "content_type": call_ct,
-            "message_count": len(call_messages),
-            "serialized_bytes": len(json.dumps(call_messages)),
-            "top_level_keys": [sorted(m.keys()) if isinstance(m, dict) else type(m).__name__ for m in call_messages],
-        }, indent=2))
+        }, sid)
+        raw = {"status": status, "content_type": ct, "session_id": sid, "arguments": args, "messages": messages}
+        (OUT / "direct_unfiltered_call.json").write_text(json.dumps(raw, indent=2))
+        summary = {"status": status, "content_type": ct, "message_count": len(messages), "serialized_bytes": len(json.dumps(messages))}
+        try:
+            sc = messages[0]["result"]["structuredContent"]
+            summary.update({"total_results": sc.get("total_results"), "total_flights": sc.get("total_flights"), "status_text": sc.get("status"), "search_key": sc.get("search_key")})
+        except Exception:
+            pass
+        print(json.dumps(summary, indent=2))
     return 0
 
 
@@ -127,5 +75,5 @@ if __name__ == "__main__":
     try:
         raise SystemExit(main())
     except Exception as exc:
-        (OUT / "direct_probe_error.txt").write_text(f"{type(exc).__name__}: {exc}\n")
+        (OUT / "direct_unfiltered_error.txt").write_text(f"{type(exc).__name__}: {exc}\n")
         raise
