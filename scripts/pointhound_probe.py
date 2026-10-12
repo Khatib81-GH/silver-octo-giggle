@@ -46,27 +46,26 @@ def select_airport(page, placeholder: str, code: str) -> None:
     box.press("Enter")
 
 
-def set_date_directly(page, value: str) -> str:
+def select_dec_25_2026(page) -> str:
     field = page.get_by_placeholder("Date or date range", exact=False).first
     field.click()
-    try:
-        field.fill(value)
-    except Exception:
-        pass
-    # Force the same DOM events a user edit would emit. This avoids dependence
-    # on the date-picker's month-navigation controls.
-    field.evaluate(
-        """(el, value) => {
-          const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
-          setter.call(el, value);
-          el.dispatchEvent(new Event('input', {bubbles: true}));
-          el.dispatchEvent(new Event('change', {bubbles: true}));
-          el.dispatchEvent(new Event('blur', {bubbles: true}));
-        }""",
-        value,
-    )
-    page.keyboard.press("Escape")
-    page.keyboard.press("Tab")
+    page.wait_for_timeout(500)
+    next_button = page.locator("button[aria-label='Go to the Next Month']")
+    next_button.wait_for(state="visible", timeout=10_000)
+    # The date picker opens on the current month: October 2026.
+    next_button.click()
+    page.wait_for_timeout(250)
+    next_button = page.locator("button[aria-label='Go to the Next Month']")
+    next_button.click()
+    page.wait_for_timeout(350)
+
+    target = page.locator("button[aria-label='Friday, December 25th, 2026']")
+    target.wait_for(state="visible", timeout=10_000)
+    target.click()
+    page.wait_for_timeout(250)
+    select_button = page.get_by_role("button", name="Select", exact=True)
+    select_button.wait_for(state="visible", timeout=10_000)
+    select_button.click()
     page.wait_for_timeout(500)
     return field.input_value()
 
@@ -101,13 +100,12 @@ def main() -> int:
         page.goto("https://www.pointhound.com/search", wait_until="networkidle", timeout=120_000)
         select_airport(page, "Origin airport or city", "JED")
         select_airport(page, "Destination airport", "DTW")
-        input_value = set_date_directly(page, "December 25, 2026")
+        input_value = select_dec_25_2026(page)
 
         (OUT / "selected_date.txt").write_text(input_value)
         page.screenshot(path=str(OUT / "ready_to_search.png"), full_page=True)
-        dump("visible_buttons_before_search.json", page.locator("button").evaluate_all(
-            "els => els.filter(e => !!(e.offsetWidth || e.offsetHeight || e.getClientRects().length)).map(e => ({text:e.innerText, aria:e.getAttribute('aria-label'), disabled:e.disabled}))"
-        ))
+        if "December 25, 2026" not in input_value:
+            raise RuntimeError(f"unexpected date value: {input_value!r}")
 
         if not click_visible(page.get_by_role("button", name=re.compile("Fetch deals", re.I))):
             raise RuntimeError("Fetch deals button not found")
