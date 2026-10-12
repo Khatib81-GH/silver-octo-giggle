@@ -5,42 +5,37 @@ on:
     branches:
       - tmp/jed-dtw-fares-20261012
     paths:
-      - flightpoints_sweep.py
+      - flightpoints_one.py
       - .github/workflows/jed-dtw-fare-sweep.yml
 
 permissions:
   contents: read
 
 jobs:
-  flightpoints-sweep:
+  flightpoints-one:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 8
     steps:
       - name: Check out branch
         uses: actions/checkout@v4
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
       - name: Install MCP client
         run: python -m pip install 'mcp==2.3.0'
-
-      - name: Search JED-DTW awards in two flexible-date batches
-        id: sweep
+      - name: Run filtered Flightpoints test
+        id: search
         continue-on-error: true
-        run: python flightpoints_sweep.py
-
+        run: python flightpoints_one.py
       - name: Ensure results directory exists
         if: always()
-        run: mkdir -p results && printf '%s\n' "step_outcome=${{ steps.sweep.outcome }}" > results/workflow_status.txt
-
-      - name: Upload Flightpoints results
+        run: mkdir -p results && printf '%s\n' "step_outcome=${{ steps.search.outcome }}" > results/workflow_status.txt
+      - name: Upload test result
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: flightpoints-jed-dtw-awards
+          name: flightpoints-one
           path: results/
           if-no-files-found: warn
           retention-days: 3
