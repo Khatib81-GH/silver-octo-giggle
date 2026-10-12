@@ -1,4 +1,4 @@
-name: Temporary flight search discovery
+name: Temporary JED-DTW fare sweep
 
 on:
   push:
@@ -9,87 +9,176 @@ permissions:
   contents: read
 
 jobs:
-  discover:
+  search:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 35
     steps:
-      - name: Discover award API safely
+      - name: Install live cash-search dependency
+        shell: bash
+        run: |
+          python3 -m pip install --upgrade pip >/dev/null
+          python3 -m pip install fast-flights >/dev/null
+
+      - name: Search live cash fares and award space
         shell: bash
         run: |
           python3 - <<'PY'
+          import dataclasses
+          import datetime as dt
           import json
+          import re
+          import time
           import urllib.error
+          import urllib.parse
           import urllib.request
 
-          def get(url):
-              req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 flight-research"})
+          START = dt.date(2026, 12, 25)
+          END = dt.date(2027, 1, 5)
+          DATES = []
+          d = START
+          while d <= END:
+              DATES.append(d.isoformat())
+              d += dt.timedelta(days=1)
+
+          def request_json(url, *, method="GET", payload=None, headers=None, timeout=150):
+              body = None if payload is None else json.dumps(payload).encode("utf-8")
+              base_headers = {
+                  "Accept": "application/json",
+                  "User-Agent": "Mozilla/5.0 flight-research",
+              }
+              if payload is not None:
+                  base_headers["Content-Type"] = "application/json"
+              base_headers.update(headers or {})
+              req = urllib.request.Request(url, data=body, headers=base_headers, method=method)
               try:
-                  with urllib.request.urlopen(req, timeout=30) as r:
-                      return r.status, r.headers.get("content-type", ""), r.read().decode("utf-8", "replace")
+                  with urllib.request.urlopen(req, timeout=timeout) as r:
+                      text = r.read().decode("utf-8", "replace")
+                      return r.status, json.loads(text) if text else {}
               except urllib.error.HTTPError as e:
-                  return e.code, e.headers.get("content-type", ""), e.read().decode("utf-8", "replace")
+                  text = e.read().decode("utf-8", "replace")
+                  try:
+                      parsed = json.loads(text) if text else {}
+                  except Exception:
+                      parsed = {"raw": text[:2000]}
+                  return e.code, parsed
+              except Exception as e:
+                  return 0, {"error": f"{type(e).__name__}: {e}"}
 
-          def post_json(url, payload, headers=None):
-              body = json.dumps(payload).encode()
-              h = {"Content-Type": "application/json", "Accept": "application/json", "User-Agent": "Mozilla/5.0 flight-research"}
-              h.update(headers or {})
-              req = urllib.request.Request(url, data=body, headers=h, method="POST")
-              try:
-                  with urllib.request.urlopen(req, timeout=60) as r:
-                      return r.status, r.headers.get("content-type", ""), r.read().decode("utf-8", "replace")
-              except urllib.error.HTTPError as e:
-                  return e.code, e.headers.get("content-type", ""), e.read().decode("utf-8", "replace")
-
-          for url in [
-              "https://awardtravelfinder.com/.well-known/agent.json",
-              "https://awardtravelfinder.com/.well-known/openapi.yaml",
-          ]:
-              status, ctype, text = get(url)
-              print(f"=== GET {url} :: {status} {ctype} ===")
-              print(text[:120000])
-
-          status, ctype, text = post_json(
+          # ---- Award searches: Award Travel Finder REST API ----
+          reg_status, reg = request_json(
               "https://awardtravelfinder.com/api/v1/agent/register",
-              {"agent_name": "ChatGPT-Mohamad-Flight-Search-20261012"},
+              method="POST",
+              payload={
+                  "agent_name": "ChatGPT-Mohamad-JED-DTW-20261012",
+                  "registration_key": "chatgpt-mohamad-jed-dtw-20261012-v2"
+              },
           )
-          print(f"=== REGISTER :: {status} {ctype} ===")
-          try:
-              payload = json.loads(text)
-          except Exception:
-              payload = {"raw": text[:2000]}
-          api_key = None
-          if isinstance(payload, dict):
-              for key in ("api_key", "key", "token", "access_token"):
-                  if isinstance(payload.get(key), str):
-                      api_key = payload[key]
-                      payload[key] = "<REDACTED>"
-              data = payload.get("data")
-              if isinstance(data, dict):
-                  for key in ("api_key", "key", "token", "access_token"):
-                      if isinstance(data.get(key), str):
-                          api_key = data[key]
-                          data[key] = "<REDACTED>"
-          print(json.dumps(payload, indent=2)[:10000])
+          api_key = reg.get("api_key") if isinstance(reg, dict) else None
+          award_output = {
+              "registration_status": reg_status,
+              "usage": reg.get("usage") if isinstance(reg, dict) else None,
+              "dates": {},
+          }
+          if not api_key:
+              award_output["fatal_error"] = reg
+          else:
+              api_headers = {"X-API-Key": api_key}
+              base = "https://awardtravelfinder.com/api/v1/chatgpt"
+              skyteam_slugs = {
+                  "delta", "air-france", "air_france", "klm", "saudia", "saudi-arabian-airlines",
+                  "virgin-atlantic", "virgin_atlantic", "middle-east-airlines", "mea",
+                  "aeromexico", "aerolineas-argentinas", "aerolineas_argentinas",
+                  "china-airlines", "china_airlines", "china-eastern", "china_eastern",
+                  "garuda-indonesia", "garuda_indonesia", "kenya-airways", "kenya_airways",
+                  "korean-air", "korean_air", "sas", "scandinavian-airlines",
+                  "tarom", "vietnam-airlines", "vietnam_airlines", "xiamen-air", "xiamen_air"
+              }
+              calls_used = 0
+              for travel_date in DATES:
+                  params = urllib.parse.urlencode({
+                      "departure": "JED",
+                      "destination": "DTW",
+                      "date": travel_date,
+                  })
+                  status, payload = request_json(f"{base}/search_all?{params}", headers=api_headers, timeout=180)
+                  calls_used += 1
+                  date_record = {
+                      "search_all_status": status,
+                      "search_all": payload,
+                      "polled": {},
+                  }
 
-          if api_key:
-              headers = {"x-api-key": api_key}
-              candidates = [
-                  ("GET", "https://awardtravelfinder.com/api/v1/delta/availability?departure_code=JED&arrival_code=DTW&date=2026-12-30", None),
-                  ("GET", "https://awardtravelfinder.com/api/v1/search_all_airlines?departure_code=JED&arrival_code=DTW&date=2026-12-30&cabin=economy&flex_days=7", None),
-                  ("GET", "https://awardtravelfinder.com/api/v1/search-all-airlines?departure_code=JED&arrival_code=DTW&date=2026-12-30&cabin=economy&flex_days=7", None),
-                  ("POST", "https://awardtravelfinder.com/api/v1/search_all_airlines", {"departure_code":"JED","arrival_code":"DTW","date":"2026-12-30","cabin":"economy","flex_days":7}),
-                  ("POST", "https://awardtravelfinder.com/api/v1/search-all-airlines", {"departure_code":"JED","arrival_code":"DTW","date":"2026-12-30","cabin":"economy","flex_days":7}),
-              ]
-              for method, url, body in candidates:
-                  if method == "GET":
-                      req = urllib.request.Request(url, headers={"x-api-key": api_key, "Accept":"application/json", "User-Agent":"Mozilla/5.0 flight-research"})
-                      try:
-                          with urllib.request.urlopen(req, timeout=120) as r:
-                              st, ct, tx = r.status, r.headers.get("content-type", ""), r.read().decode("utf-8", "replace")
-                      except urllib.error.HTTPError as e:
-                          st, ct, tx = e.code, e.headers.get("content-type", ""), e.read().decode("utf-8", "replace")
-                  else:
-                      st, ct, tx = post_json(url, body, {"x-api-key": api_key})
-                  print(f"=== {method} {url} :: {st} {ct} ===")
-                  print(tx[:50000])
+                  data = payload.get("data", {}) if isinstance(payload, dict) else {}
+                  pending = data.get("pending_searches", {}) if isinstance(data, dict) else {}
+                  if isinstance(pending, dict):
+                      for airline, info in pending.items():
+                          slug = str(airline).strip().lower()
+                          slug_normalized = slug.replace(" ", "-")
+                          if slug not in skyteam_slugs and slug_normalized not in skyteam_slugs:
+                              continue
+                          if calls_used >= 48:
+                              date_record["polled"][airline] = {"status": "skipped_api_call_cap"}
+                              continue
+                          cache_key = info.get("cache_key") if isinstance(info, dict) else None
+                          if not cache_key:
+                              continue
+                          poll_params = urllib.parse.urlencode({"airline": airline, "cache_key": cache_key})
+                          pstatus, ppayload = request_json(f"{base}/search_status?{poll_params}", headers=api_headers, timeout=100)
+                          calls_used += 1
+                          date_record["polled"][airline] = {"http_status": pstatus, "payload": ppayload}
+
+                  award_output["dates"][travel_date] = date_record
+                  time.sleep(0.75)
+
+              award_output["api_calls_used"] = calls_used
+
+          print("===AWARD_RESULTS_JSON_START===")
+          print(json.dumps(award_output, separators=(",", ":"), ensure_ascii=False))
+          print("===AWARD_RESULTS_JSON_END===")
+
+          # ---- Cash searches: live Google Flights via fast-flights ----
+          from fast_flights import FlightData, Passengers, get_flights
+
+          skyteam_names = (
+              "delta", "air france", "klm", "saudia", "saudi arabian", "middle east airlines",
+              "virgin atlantic", "aeromexico", "aerolíneas argentinas", "aerolineas argentinas",
+              "china airlines", "china eastern", "garuda", "kenya airways", "korean air",
+              "sas", "scandinavian airlines", "tarom", "vietnam airlines", "xiamenair", "xiamen air"
+          )
+
+          def price_number(value):
+              m = re.search(r"[0-9][0-9,]*", str(value))
+              return int(m.group(0).replace(",", "")) if m else 10**9
+
+          cash_output = {"dates": {}}
+          for travel_date in DATES:
+              rec = {"skyteam_options": [], "all_options_count": 0}
+              try:
+                  result = get_flights(
+                      flight_data=[FlightData(date=travel_date, from_airport="JED", to_airport="DTW")],
+                      trip="one-way",
+                      seat="economy",
+                      passengers=Passengers(adults=1, children=0, infants_in_seat=0, infants_on_lap=0),
+                      fetch_mode="common",
+                      max_stops=2,
+                  )
+                  flights = [dataclasses.asdict(f) for f in result.flights]
+                  rec["google_price_level"] = result.current_price
+                  rec["all_options_count"] = len(flights)
+                  matches = []
+                  for flight in flights:
+                      label = str(flight.get("name", "")).lower()
+                      if any(name in label for name in skyteam_names):
+                          matches.append(flight)
+                  matches.sort(key=lambda f: price_number(f.get("price")))
+                  rec["skyteam_options"] = matches[:12]
+                  rec["all_options_sample"] = sorted(flights, key=lambda f: price_number(f.get("price")))[:5]
+              except Exception as e:
+                  rec["error"] = f"{type(e).__name__}: {e}"
+              cash_output["dates"][travel_date] = rec
+              time.sleep(1.0)
+
+          print("===CASH_RESULTS_JSON_START===")
+          print(json.dumps(cash_output, separators=(",", ":"), ensure_ascii=False))
+          print("===CASH_RESULTS_JSON_END===")
           PY
