@@ -1,0 +1,72 @@
+name: Temporary Pointhound probe
+
+on:
+  push:
+    branches:
+      - tmp/jed-dtw-fares-20261012
+    paths:
+      - .github/workflows/pointhound-probe.yml
+      - scripts/pointhound_probe.py
+
+permissions:
+  contents: write
+
+concurrency:
+  group: temporary-pointhound-probe
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: true
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install browser
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install playwright
+          python -m playwright install --with-deps chromium
+
+      - name: Run public award-search probe
+        continue-on-error: true
+        env:
+          PYTHONUNBUFFERED: '1'
+        run: |
+          python scripts/pointhound_probe.py
+
+      - name: Print diagnostics
+        if: always()
+        run: |
+          if [ -f results/pointhound_probe/probe_error.txt ]; then cat results/pointhound_probe/probe_error.txt; fi
+          if [ -f results/pointhound_probe/results_text.txt ]; then sed -n '1,200p' results/pointhound_probe/results_text.txt; fi
+
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pointhound-probe-results
+          path: results/pointhound_probe/
+          if-no-files-found: warn
+          retention-days: 3
+
+      - name: Commit diagnostics to temporary branch
+        if: always()
+        run: |
+          if [ ! -d results/pointhound_probe ]; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add results/pointhound_probe/
+          if git diff --cached --quiet; then
+            echo 'No diagnostic changes to commit.'
+          else
+            git commit -m 'Store temporary Pointhound probe diagnostics'
+            git push origin HEAD:tmp/jed-dtw-fares-20261012
+          fi
