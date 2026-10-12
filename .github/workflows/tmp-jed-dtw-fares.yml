@@ -26,28 +26,29 @@ jobs:
       - name: Install search clients
         run: |
           python -m pip install --upgrade pip
-          python -m pip install 'mcp>=1.12,<2' fast-flights playwright
+          python -m pip install 'mcp>=1.12,<2' playwright
+          python -m pip install 'git+https://github.com/kftang/fast-flights.git'
           python -m playwright install --with-deps chromium
 
-      - name: Search cash and awards without restarting completed sources
+      - name: Search cash and awards in two preserved batches
         continue-on-error: true
-        run: python scripts/tmp_jed_dtw_scan.py
+        run: python scripts/tmp_jed_dtw_scan_v2.py
 
       - name: Show result files
         if: always()
         run: |
           echo '--- Markdown summary ---'
-          cat tmp_jed_dtw_results.md 2>/dev/null || true
+          cat tmp_jed_dtw_results_v2.md 2>/dev/null || true
           echo '--- JSON size ---'
-          wc -c tmp_jed_dtw_results.json 2>/dev/null || true
+          wc -c tmp_jed_dtw_results_v2.json 2>/dev/null || true
 
       - name: Upload complete results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: jed-dtw-cash-awards-20261225-20270105
+          name: jed-dtw-cash-awards-v2-20261225-20270105
           path: |
-            tmp_jed_dtw_results.json
-            tmp_jed_dtw_results.md
+            tmp_jed_dtw_results_v2.json
+            tmp_jed_dtw_results_v2.md
           if-no-files-found: warn
           retention-days: 1
