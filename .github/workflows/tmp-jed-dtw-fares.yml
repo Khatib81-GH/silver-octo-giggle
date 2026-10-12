@@ -11,44 +11,59 @@ permissions:
   contents: read
 
 jobs:
-  scan:
+  pointsyeah-awards:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 10
     steps:
-      - name: Check out scratch branch
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          python-version: '3.11'
-
-      - name: Install search clients
+          node-version: '22'
+      - name: Install PointsYeah client
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install 'mcp>=1.12,<2' playwright
-          python -m pip install 'git+https://github.com/kftang/fast-flights.git'
-          python -m playwright install --with-deps chromium
-
-      - name: Search cash and awards in two preserved batches
+          git clone --depth=1 https://github.com/farzanariel/pointsyeah-api.git /tmp/pointsyeah-api
+          cd /tmp/pointsyeah-api
+          npm ci
+      - name: Search all dates in one award task
         continue-on-error: true
-        run: python scripts/tmp_jed_dtw_scan_v2.py
-
-      - name: Show result files
+        run: /tmp/pointsyeah-api/node_modules/.bin/tsx scripts/tmp_pointsyeah_scan.ts
+      - name: Show compact result
         if: always()
-        run: |
-          echo '--- Markdown summary ---'
-          cat tmp_jed_dtw_results_v2.md 2>/dev/null || true
-          echo '--- JSON size ---'
-          wc -c tmp_jed_dtw_results_v2.json 2>/dev/null || true
-
-      - name: Upload complete results
+        run: cat tmp_pointsyeah_programs.json 2>/dev/null || true
+      - name: Upload award source
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: jed-dtw-cash-awards-v2-20261225-20270105
+          name: jed-dtw-pointsyeah-20261225-20270105
           path: |
-            tmp_jed_dtw_results_v2.json
-            tmp_jed_dtw_results_v2.md
+            tmp_pointsyeah_results.json
+            tmp_pointsyeah_programs.json
+            tmp_pointsyeah_progress.json
+          if-no-files-found: warn
+          retention-days: 1
+
+  google-cash:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Google Flights client
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install playwright
+          python -m pip install 'git+https://github.com/kftang/fast-flights.git'
+          python -m playwright install --with-deps chromium
+      - name: Search each date and preserve each completed result
+        continue-on-error: true
+        run: python scripts/tmp_google_cash_scan.py
+      - name: Upload cash source
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jed-dtw-google-cash-20261225-20270105
+          path: tmp_google_cash_results.json
           if-no-files-found: warn
           retention-days: 1
