@@ -1,0 +1,77 @@
+name: Temporary Delta SkyMiles award sweep
+
+on:
+  push:
+    branches: [tmp/jed-dtw-fares-20261012]
+    paths:
+      - scripts/delta_award_sweep.py
+      - .github/workflows/delta-award-sweep.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: temporary-delta-award-sweep
+  cancel-in-progress: false
+
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: browser-actions/setup-chrome@v1
+      - name: Clone validated Delta scraper
+        run: git clone --depth 1 https://github.com/louie3697/points-pilot-jobs.git /tmp/points-pilot-jobs
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install nodriver==0.50.3 'websockets>=14,<15' httpx beautifulsoup4 pyyaml
+      - name: Search Delta SkyMiles, preserving each completed date
+        continue-on-error: true
+        env:
+          PYTHONUNBUFFERED: '1'
+          POINTS_PILOT_REPO: /tmp/points-pilot-jobs
+        run: xvfb-run -a python scripts/delta_award_sweep.py
+      - name: Print compact result
+        if: always()
+        run: |
+          if [ -f results/delta_award/jed_dtw_delta_skymiles_2026-12-25_to_2027-01-05.json ]; then
+            python - <<'PY'
+          import json
+          p='results/delta_award/jed_dtw_delta_skymiles_2026-12-25_to_2027-01-05.json'
+          d=json.load(open(p))
+          for day in sorted(set(d.get('results',{})) | set(d.get('errors',{}))):
+              rows=d.get('results',{}).get(day,[])
+              if rows:
+                  r=rows[0]
+                  print(day, r.get('points_cost'), r.get('cash_cost'), r.get('cabin_class'), r.get('raw_flight_number'), r.get('duration_minutes'))
+              else:
+                  print(day, 'NO RESULT', d.get('errors',{}).get(day,''))
+          PY
+          fi
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: delta-award-sweep-results
+          path: results/delta_award/
+          if-no-files-found: warn
+          retention-days: 3
+      - name: Commit checkpoint to temporary branch
+        if: always()
+        run: |
+          if [ ! -d results/delta_award ]; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add results/delta_award/
+          if ! git diff --cached --quiet; then
+            git commit -m 'Store temporary Delta award sweep results'
+            git push origin HEAD:tmp/jed-dtw-fares-20261012
+          fi
