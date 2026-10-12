@@ -37,7 +37,9 @@ jobs:
 
       - name: Run Google Flights SkyTeam cash sweep
         continue-on-error: true
-        run: python tmp_search/cash_and_seats.py
+        run: |
+          python tmp_search/cash_and_seats.py
+          python tmp_search/cash_raw.py
 
       - name: Run direct Delta SkyMiles sweep
         continue-on-error: true
@@ -58,7 +60,7 @@ jobs:
           import json, pathlib
           names = [
             'atf_agent.json','atf_openapi.yaml','atf_registration_redacted.json','atf_endpoints.json','atf_results.json',
-            'cash_results.json','seats_aero_results.json','delta_awards.json',
+            'cash_results.json','cash_raw_results.json','seats_aero_results.json','delta_awards.json',
             'afklm_probe.json','pointsyeah_raw.json','pointsyeah_filtered.json',
             'airfrance_reward.png','klm_reward.png','klm_alt.png'
           ]
@@ -83,6 +85,7 @@ jobs:
             atf_endpoints.json
             atf_results.json
             cash_results.json
+            cash_raw_results.json
             seats_aero_results.json
             delta_awards.json
             afklm_probe.json
