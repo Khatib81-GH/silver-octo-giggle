@@ -56,7 +56,7 @@ def rpc_post(client: httpx.Client, payload: dict[str, Any], session_id: str | No
 
 
 def main() -> int:
-    with httpx.Client(http2=True, follow_redirects=True, headers={"user-agent": "flight-research/1.0"}) as client:
+    with httpx.Client(follow_redirects=True, headers={"user-agent": "flight-research/1.0"}) as client:
         init_payload = {
             "jsonrpc": "2.0",
             "id": 1,
@@ -75,7 +75,6 @@ def main() -> int:
             "messages": init_messages,
         }, indent=2))
 
-        # Complete MCP initialization. A notification may return an empty 202.
         notification = {
             "jsonrpc": "2.0",
             "method": "notifications/initialized",
