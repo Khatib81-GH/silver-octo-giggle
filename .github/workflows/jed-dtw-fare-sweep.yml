@@ -5,19 +5,16 @@ on:
     branches:
       - tmp/jed-dtw-fares-20261012
     paths:
-      - cash_only_v2.py
-      - cash_only.py
-      - fare_sweep.py
-      - fare_sweep_v2.py
+      - award_afd.py
       - .github/workflows/jed-dtw-fare-sweep.yml
 
 permissions:
   contents: read
 
 jobs:
-  cash-sweep:
+  award-sweep:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 20
     steps:
       - name: Check out branch
         uses: actions/checkout@v4
@@ -27,23 +24,23 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install cash-search parser and dependencies
-        run: python -m pip install --upgrade pip typing_extensions pycryptodome requests 'git+https://github.com/AWeirdDev/flights.git@dev'
+      - name: Install current MCP client
+        run: python -m pip install --upgrade pip 'git+https://github.com/modelcontextprotocol/python-sdk.git'
 
-      - name: Capture alliance-filtered cash options date by date
+      - name: Query Flying Blue and SkyMiles independently in two date batches
         id: sweep
         continue-on-error: true
-        run: python cash_only_v2.py
+        run: python award_afd.py
 
       - name: Ensure results directory exists
         if: always()
         run: mkdir -p results && printf '%s\n' "step_outcome=${{ steps.sweep.outcome }}" > results/workflow_status.txt
 
-      - name: Upload cash results
+      - name: Upload award results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: jed-dtw-cash-2026-12-25-to-2027-01-05
+          name: jed-dtw-awards-2026-12-25-to-2027-01-05
           path: results/
           if-no-files-found: warn
           retention-days: 3
