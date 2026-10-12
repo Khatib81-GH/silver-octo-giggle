@@ -1,0 +1,31 @@
+name: Temporary Award Travel Finder probe
+
+on:
+  push:
+    branches:
+      - tmp/jed-dtw-fares-20261012
+    paths:
+      - .github/workflows/tmp-awardtravelfinder-probe.yml
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install requests
+      - continue-on-error: true
+        run: python scripts/tmp_awardtravelfinder_probe.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: awardtravelfinder-agent-probe
+          path: tmp_awardtravelfinder_probe.json
+          if-no-files-found: warn
+          retention-days: 1
