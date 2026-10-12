@@ -1,0 +1,2647 @@
+{
+  "generated_at": "2026-10-12T21:28:13.533234+00:00",
+  "route": "JED-DTW",
+  "trip_type": "one-way",
+  "cabin": "economy",
+  "filters": "SkyTeam-operated itineraries only; programs Flying Blue and Delta SkyMiles",
+  "date_batches": [
+    [
+      "2026-12-25",
+      "2026-12-30"
+    ],
+    [
+      "2026-12-31",
+      "2027-01-05"
+    ]
+  ],
+  "rows": [
+    {
+      "date": "2026-12-25",
+      "cash_best": {
+        "airlines": "Saudia, KLM, Delta",
+        "price_text": "$1071",
+        "price_usd": 1071.0,
+        "departure": "9:00 PM on Fri, Dec 25",
+        "arrival": "1:05 PM on Sat, Dec 26",
+        "arrival_time_ahead": "+1",
+        "duration": "24 hr 5 min",
+        "stops": 2,
+        "is_best": false,
+        "delay": null
+      },
+      "cash_options": [
+        {
+          "airlines": "Saudia, KLM, Delta",
+          "price_text": "$1071",
+          "price_usd": 1071.0,
+          "departure": "9:00 PM on Fri, Dec 25",
+          "arrival": "1:05 PM on Sat, Dec 26",
+          "arrival_time_ahead": "+1",
+          "duration": "24 hr 5 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, KLM, Delta",
+          "price_text": "$1071",
+          "price_usd": 1071.0,
+          "departure": "9:00 PM on Fri, Dec 25",
+          "arrival": "1:05 PM on Sat, Dec 26",
+          "arrival_time_ahead": "+1",
+          "duration": "24 hr 5 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1161",
+          "price_usd": 1161.0,
+          "departure": "1:05 AM on Fri, Dec 25",
+          "arrival": "7:15 PM on Fri, Dec 25",
+          "arrival_time_ahead": "",
+          "duration": "26 hr 10 min",
+          "stops": 1,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1161",
+          "price_usd": 1161.0,
+          "departure": "1:05 AM on Fri, Dec 25",
+          "arrival": "7:15 PM on Fri, Dec 25",
+          "arrival_time_ahead": "",
+          "duration": "26 hr 10 min",
+          "stops": 1,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1302",
+          "price_usd": 1302.0,
+          "departure": "11:00 PM on Fri, Dec 25",
+          "arrival": "7:15 PM on Sat, Dec 26",
+          "arrival_time_ahead": "+1",
+          "duration": "28 hr 15 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1302",
+          "price_usd": 1302.0,
+          "departure": "11:00 PM on Fri, Dec 25",
+          "arrival": "7:15 PM on Sat, Dec 26",
+          "arrival_time_ahead": "+1",
+          "duration": "28 hr 15 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, KLM, Delta",
+          "price_text": "$1303",
+          "price_usd": 1303.0,
+          "departure": "7:00 PM on Fri, Dec 25",
+          "arrival": "1:05 PM on Sat, Dec 26",
+          "arrival_time_ahead": "+1",
+          "duration": "26 hr 5 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, KLM, Delta",
+          "price_text": "$1303",
+          "price_usd": 1303.0,
+          "departure": "7:00 PM on Fri, Dec 25",
+          "arrival": "1:05 PM on Sat, Dec 26",
+          "arrival_time_ahead": "+1",
+          "duration": "26 hr 5 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        }
+      ],
+      "flying_blue_best": {
+        "date": "2026-12-25",
+        "program": "Flying Blue",
+        "program_raw": "Air France/KLM Flying Blue",
+        "program_code": "KL",
+        "miles": 3500,
+        "tax_usd": 98,
+        "cash_price_field": 0,
+        "cabin": "Economy",
+        "seats": 9999,
+        "duration_minutes": 224,
+        "segments": [
+          {
+            "duration": 119,
+            "flight_number": "KL7979",
+            "aircraft": "Boeing 777-200': 'Boeing 777-200",
+            "dt": "2026-12-25T02:52:00",
+            "da": "JED",
+            "at": "2026-12-25T04:51:00",
+            "aa": "DTW",
+            "layover": 0,
+            "cabin": "Economy"
+          }
+        ],
+        "route": "JED-DTW",
+        "flight_numbers": [
+          "KL7979"
+        ],
+        "booking_code": null,
+        "booking_url": ""
+      },
+      "delta_best": {
+        "date": "2026-12-25",
+        "program": "Delta SkyMiles",
+        "program_raw": "Delta SkyMiles",
+        "program_code": "DL",
+        "miles": 10600,
+        "tax_usd": 78,
+        "cash_price_field": 0,
+        "cabin": "Economy",
+        "seats": 9999,
+        "duration_minutes": 218,
+        "segments": [
+          {
+            "duration": 158,
+            "flight_number": "DL6182",
+            "aircraft": "787': 'Boeing 787",
+            "dt": "2026-12-25T00:33:00",
+            "da": "JED",
+            "at": "2026-12-25T03:11:00",
+            "aa": "DTW",
+            "layover": 0,
+            "cabin": "Economy"
+          }
+        ],
+        "route": "JED-DTW",
+        "flight_numbers": [
+          "DL6182"
+        ],
+        "booking_code": null,
+        "booking_url": ""
+      },
+      "award_options": [
+        {
+          "date": "2026-12-25",
+          "program": "Delta SkyMiles",
+          "program_raw": "Delta SkyMiles",
+          "program_code": "DL",
+          "miles": 10600,
+          "tax_usd": 78,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 218,
+          "segments": [
+            {
+              "duration": 158,
+              "flight_number": "DL6182",
+              "aircraft": "787': 'Boeing 787",
+              "dt": "2026-12-25T00:33:00",
+              "da": "JED",
+              "at": "2026-12-25T03:11:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "DL6182"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        },
+        {
+          "date": "2026-12-25",
+          "program": "Flying Blue",
+          "program_raw": "Air France/KLM Flying Blue",
+          "program_code": "KL",
+          "miles": 3500,
+          "tax_usd": 98,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 224,
+          "segments": [
+            {
+              "duration": 119,
+              "flight_number": "KL7979",
+              "aircraft": "Boeing 777-200': 'Boeing 777-200",
+              "dt": "2026-12-25T02:52:00",
+              "da": "JED",
+              "at": "2026-12-25T04:51:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "KL7979"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        }
+      ],
+      "cash_error": null
+    },
+    {
+      "date": "2026-12-26",
+      "cash_best": {
+        "airlines": "Saudia, Air France",
+        "price_text": "$1070",
+        "price_usd": 1070.0,
+        "departure": "4:00 AM on Sat, Dec 26",
+        "arrival": "7:15 PM on Sat, Dec 26",
+        "arrival_time_ahead": "",
+        "duration": "23 hr 15 min",
+        "stops": 2,
+        "is_best": false,
+        "delay": null
+      },
+      "cash_options": [
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1070",
+          "price_usd": 1070.0,
+          "departure": "4:00 AM on Sat, Dec 26",
+          "arrival": "7:15 PM on Sat, Dec 26",
+          "arrival_time_ahead": "",
+          "duration": "23 hr 15 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1070",
+          "price_usd": 1070.0,
+          "departure": "4:00 AM on Sat, Dec 26",
+          "arrival": "7:15 PM on Sat, Dec 26",
+          "arrival_time_ahead": "",
+          "duration": "23 hr 15 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, KLM, Delta",
+          "price_text": "$1071",
+          "price_usd": 1071.0,
+          "departure": "9:00 PM on Sat, Dec 26",
+          "arrival": "1:05 PM on Sun, Dec 27",
+          "arrival_time_ahead": "+1",
+          "duration": "24 hr 5 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, KLM, Delta",
+          "price_text": "$1071",
+          "price_usd": 1071.0,
+          "departure": "9:00 PM on Sat, Dec 26",
+          "arrival": "1:05 PM on Sun, Dec 27",
+          "arrival_time_ahead": "+1",
+          "duration": "24 hr 5 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1302",
+          "price_usd": 1302.0,
+          "departure": "1:00 AM on Sat, Dec 26",
+          "arrival": "7:15 PM on Sat, Dec 26",
+          "arrival_time_ahead": "",
+          "duration": "26 hr 15 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1302",
+          "price_usd": 1302.0,
+          "departure": "2:00 AM on Sat, Dec 26",
+          "arrival": "7:15 PM on Sat, Dec 26",
+          "arrival_time_ahead": "",
+          "duration": "25 hr 15 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1302",
+          "price_usd": 1302.0,
+          "departure": "1:00 AM on Sat, Dec 26",
+          "arrival": "7:15 PM on Sat, Dec 26",
+          "arrival_time_ahead": "",
+          "duration": "26 hr 15 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1302",
+          "price_usd": 1302.0,
+          "departure": "2:00 AM on Sat, Dec 26",
+          "arrival": "7:15 PM on Sat, Dec 26",
+          "arrival_time_ahead": "",
+          "duration": "25 hr 15 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        }
+      ],
+      "flying_blue_best": {
+        "date": "2026-12-26",
+        "program": "Flying Blue",
+        "program_raw": "Air France/KLM Flying Blue",
+        "program_code": "KL",
+        "miles": 14600,
+        "tax_usd": 50,
+        "cash_price_field": 0,
+        "cabin": "Economy",
+        "seats": 9999,
+        "duration_minutes": 70,
+        "segments": [
+          {
+            "duration": 225,
+            "flight_number": "KL3256",
+            "aircraft": "752': 'Boeing 757-200",
+            "dt": "2026-12-26T00:57:00",
+            "da": "JED",
+            "at": "2026-12-26T04:42:00",
+            "aa": "DTW",
+            "layover": 0,
+            "cabin": "Economy"
+          }
+        ],
+        "route": "JED-DTW",
+        "flight_numbers": [
+          "KL3256"
+        ],
+        "booking_code": null,
+        "booking_url": ""
+      },
+      "delta_best": {
+        "date": "2026-12-26",
+        "program": "Delta SkyMiles",
+        "program_raw": "Delta SkyMiles",
+        "program_code": "DL",
+        "miles": 4500,
+        "tax_usd": 48,
+        "cash_price_field": 0,
+        "cabin": "Economy",
+        "seats": 9999,
+        "duration_minutes": 214,
+        "segments": [
+          {
+            "duration": 213,
+            "flight_number": "DL2920",
+            "aircraft": "Airbus 350-1000': 'Airbus A350-1000",
+            "dt": "2026-12-26T03:19:00",
+            "da": "JED",
+            "at": "2026-12-26T06:52:00",
+            "aa": "DTW",
+            "layover": 0,
+            "cabin": "Economy"
+          }
+        ],
+        "route": "JED-DTW",
+        "flight_numbers": [
+          "DL2920"
+        ],
+        "booking_code": null,
+        "booking_url": ""
+      },
+      "award_options": [
+        {
+          "date": "2026-12-26",
+          "program": "Delta SkyMiles",
+          "program_raw": "Delta SkyMiles",
+          "program_code": "DL",
+          "miles": 4500,
+          "tax_usd": 48,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 214,
+          "segments": [
+            {
+              "duration": 213,
+              "flight_number": "DL2920",
+              "aircraft": "Airbus 350-1000': 'Airbus A350-1000",
+              "dt": "2026-12-26T03:19:00",
+              "da": "JED",
+              "at": "2026-12-26T06:52:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "DL2920"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        },
+        {
+          "date": "2026-12-26",
+          "program": "Delta SkyMiles",
+          "program_raw": "Delta SkyMiles",
+          "program_code": "DL",
+          "miles": 5200,
+          "tax_usd": 11,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 217,
+          "segments": [
+            {
+              "duration": 185,
+              "flight_number": "DL7577",
+              "aircraft": "339': 'Airbus A339",
+              "dt": "2026-12-26T06:16:00",
+              "da": "JED",
+              "at": "2026-12-26T09:21:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "DL7577"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        },
+        {
+          "date": "2026-12-26",
+          "program": "Delta SkyMiles",
+          "program_raw": "Delta SkyMiles",
+          "program_code": "DL",
+          "miles": 12900,
+          "tax_usd": 65,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 187,
+          "segments": [
+            {
+              "duration": 170,
+              "flight_number": "DL2923",
+              "aircraft": "223': 'Airbus A220-300",
+              "dt": "2026-12-26T10:10:00",
+              "da": "JED",
+              "at": "2026-12-26T13:00:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "DL2923"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        },
+        {
+          "date": "2026-12-26",
+          "program": "Flying Blue",
+          "program_raw": "Air France/KLM Flying Blue",
+          "program_code": "KL",
+          "miles": 14600,
+          "tax_usd": 50,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 70,
+          "segments": [
+            {
+              "duration": 225,
+              "flight_number": "KL3256",
+              "aircraft": "752': 'Boeing 757-200",
+              "dt": "2026-12-26T00:57:00",
+              "da": "JED",
+              "at": "2026-12-26T04:42:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "KL3256"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        }
+      ],
+      "cash_error": null
+    },
+    {
+      "date": "2026-12-27",
+      "cash_best": {
+        "airlines": "Saudia, KLM, Delta",
+        "price_text": "$1071",
+        "price_usd": 1071.0,
+        "departure": "9:00 PM on Sun, Dec 27",
+        "arrival": "1:05 PM on Mon, Dec 28",
+        "arrival_time_ahead": "+1",
+        "duration": "24 hr 5 min",
+        "stops": 2,
+        "is_best": false,
+        "delay": null
+      },
+      "cash_options": [
+        {
+          "airlines": "Saudia, KLM, Delta",
+          "price_text": "$1071",
+          "price_usd": 1071.0,
+          "departure": "9:00 PM on Sun, Dec 27",
+          "arrival": "1:05 PM on Mon, Dec 28",
+          "arrival_time_ahead": "+1",
+          "duration": "24 hr 5 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1071",
+          "price_usd": 1071.0,
+          "departure": "8:30 PM on Sun, Dec 27",
+          "arrival": "7:15 PM on Mon, Dec 28",
+          "arrival_time_ahead": "+1",
+          "duration": "30 hr 45 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, KLM, Delta",
+          "price_text": "$1071",
+          "price_usd": 1071.0,
+          "departure": "9:00 PM on Sun, Dec 27",
+          "arrival": "1:05 PM on Mon, Dec 28",
+          "arrival_time_ahead": "+1",
+          "duration": "24 hr 5 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1071",
+          "price_usd": 1071.0,
+          "departure": "8:30 PM on Sun, Dec 27",
+          "arrival": "7:15 PM on Mon, Dec 28",
+          "arrival_time_ahead": "+1",
+          "duration": "30 hr 45 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1331",
+          "price_usd": 1331.0,
+          "departure": "10:20 PM on Sun, Dec 27",
+          "arrival": "7:15 PM on Mon, Dec 28",
+          "arrival_time_ahead": "+1",
+          "duration": "28 hr 55 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1331",
+          "price_usd": 1331.0,
+          "departure": "10:20 PM on Sun, Dec 27",
+          "arrival": "7:15 PM on Mon, Dec 28",
+          "arrival_time_ahead": "+1",
+          "duration": "28 hr 55 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Delta",
+          "price_text": "$1562",
+          "price_usd": 1562.0,
+          "departure": "3:25 AM on Sun, Dec 27",
+          "arrival": "3:08 PM on Sun, Dec 27",
+          "arrival_time_ahead": "",
+          "duration": "19 hr 43 min",
+          "stops": 1,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Delta",
+          "price_text": "$1562",
+          "price_usd": 1562.0,
+          "departure": "3:25 AM on Sun, Dec 27",
+          "arrival": "7:09 PM on Sun, Dec 27",
+          "arrival_time_ahead": "",
+          "duration": "23 hr 44 min",
+          "stops": 1,
+          "is_best": false,
+          "delay": null
+        }
+      ],
+      "flying_blue_best": null,
+      "delta_best": {
+        "date": "2026-12-27",
+        "program": "Delta SkyMiles",
+        "program_raw": "Delta SkyMiles",
+        "program_code": "DL",
+        "miles": 10500,
+        "tax_usd": 55,
+        "cash_price_field": 0,
+        "cabin": "Economy",
+        "seats": 9999,
+        "duration_minutes": 123,
+        "segments": [
+          {
+            "duration": 81,
+            "flight_number": "DL211",
+            "aircraft": "Boeing 777-300ER': 'Boeing 777-300 ER",
+            "dt": "2026-12-27T14:45:00",
+            "da": "JED",
+            "at": "2026-12-27T16:06:00",
+            "aa": "DTW",
+            "layover": 0,
+            "cabin": "Economy"
+          }
+        ],
+        "route": "JED-DTW",
+        "flight_numbers": [
+          "DL211"
+        ],
+        "booking_code": null,
+        "booking_url": ""
+      },
+      "award_options": [
+        {
+          "date": "2026-12-27",
+          "program": "Delta SkyMiles",
+          "program_raw": "Delta SkyMiles",
+          "program_code": "DL",
+          "miles": 10500,
+          "tax_usd": 55,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 123,
+          "segments": [
+            {
+              "duration": 81,
+              "flight_number": "DL211",
+              "aircraft": "Boeing 777-300ER': 'Boeing 777-300 ER",
+              "dt": "2026-12-27T14:45:00",
+              "da": "JED",
+              "at": "2026-12-27T16:06:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "DL211"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        },
+        {
+          "date": "2026-12-27",
+          "program": "Delta SkyMiles",
+          "program_raw": "Delta SkyMiles",
+          "program_code": "DL",
+          "miles": 11700,
+          "tax_usd": 98,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 65,
+          "segments": [
+            {
+              "duration": 208,
+              "flight_number": "DL4261",
+              "aircraft": "Airbus A330",
+              "dt": "2026-12-27T23:46:00",
+              "da": "JED",
+              "at": "2026-12-28T03:14:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "DL4261"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        }
+      ],
+      "cash_error": null
+    },
+    {
+      "date": "2026-12-28",
+      "cash_best": null,
+      "cash_options": [],
+      "flying_blue_best": {
+        "date": "2026-12-28",
+        "program": "Flying Blue",
+        "program_raw": "Air France/KLM Flying Blue",
+        "program_code": "KL",
+        "miles": 3700,
+        "tax_usd": 27,
+        "cash_price_field": 0,
+        "cabin": "Economy",
+        "seats": 9999,
+        "duration_minutes": 198,
+        "segments": [
+          {
+            "duration": 75,
+            "flight_number": "KL7343",
+            "aircraft": "333': 'Airbus A333",
+            "dt": "2026-12-28T20:43:00",
+            "da": "JED",
+            "at": "2026-12-28T21:58:00",
+            "aa": "DTW",
+            "layover": 0,
+            "cabin": "Economy"
+          }
+        ],
+        "route": "JED-DTW",
+        "flight_numbers": [
+          "KL7343"
+        ],
+        "booking_code": null,
+        "booking_url": ""
+      },
+      "delta_best": {
+        "date": "2026-12-28",
+        "program": "Delta SkyMiles",
+        "program_raw": "Delta SkyMiles",
+        "program_code": "DL",
+        "miles": 11300,
+        "tax_usd": 37,
+        "cash_price_field": 0,
+        "cabin": "Economy",
+        "seats": 9999,
+        "duration_minutes": 137,
+        "segments": [
+          {
+            "duration": 133,
+            "flight_number": "DL7743",
+            "aircraft": "Boeing 737-800 Passenger': 'Boeing 737-800",
+            "dt": "2026-12-28T12:04:00",
+            "da": "JED",
+            "at": "2026-12-28T14:17:00",
+            "aa": "DTW",
+            "layover": 0,
+            "cabin": "Economy"
+          }
+        ],
+        "route": "JED-DTW",
+        "flight_numbers": [
+          "DL7743"
+        ],
+        "booking_code": null,
+        "booking_url": ""
+      },
+      "award_options": [
+        {
+          "date": "2026-12-28",
+          "program": "Delta SkyMiles",
+          "program_raw": "Delta SkyMiles",
+          "program_code": "DL",
+          "miles": 11300,
+          "tax_usd": 37,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 137,
+          "segments": [
+            {
+              "duration": 133,
+              "flight_number": "DL7743",
+              "aircraft": "Boeing 737-800 Passenger': 'Boeing 737-800",
+              "dt": "2026-12-28T12:04:00",
+              "da": "JED",
+              "at": "2026-12-28T14:17:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "DL7743"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        },
+        {
+          "date": "2026-12-28",
+          "program": "Delta SkyMiles",
+          "program_raw": "Delta SkyMiles",
+          "program_code": "DL",
+          "miles": 11500,
+          "tax_usd": 5,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 106,
+          "segments": [
+            {
+              "duration": 117,
+              "flight_number": "DL717",
+              "aircraft": "Boeing 737-900': 'Boeing 737-900",
+              "dt": "2026-12-28T08:11:00",
+              "da": "JED",
+              "at": "2026-12-28T10:08:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "DL717"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        },
+        {
+          "date": "2026-12-28",
+          "program": "Flying Blue",
+          "program_raw": "Air France/KLM Flying Blue",
+          "program_code": "KL",
+          "miles": 3700,
+          "tax_usd": 27,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 198,
+          "segments": [
+            {
+              "duration": 75,
+              "flight_number": "KL7343",
+              "aircraft": "333': 'Airbus A333",
+              "dt": "2026-12-28T20:43:00",
+              "da": "JED",
+              "at": "2026-12-28T21:58:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "KL7343"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        }
+      ],
+      "cash_error": "RuntimeError: local: TimeoutError: Locator.wait_for: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator(\".eQ35Ce\") to be visible\n | fallback: BuilderError: Invalid impersonate: \"chrome_126\" | common: BuilderError: Invalid impersonate: \"chrome_126\""
+    },
+    {
+      "date": "2026-12-29",
+      "cash_best": {
+        "airlines": "Saudia, Delta",
+        "price_text": "$1562",
+        "price_usd": 1562.0,
+        "departure": "7:50 AM on Tue, Dec 29",
+        "arrival": "7:13 PM on Tue, Dec 29",
+        "arrival_time_ahead": "",
+        "duration": "19 hr 23 min",
+        "stops": 1,
+        "is_best": false,
+        "delay": null
+      },
+      "cash_options": [
+        {
+          "airlines": "Saudia, Delta",
+          "price_text": "$1562",
+          "price_usd": 1562.0,
+          "departure": "7:50 AM on Tue, Dec 29",
+          "arrival": "7:13 PM on Tue, Dec 29",
+          "arrival_time_ahead": "",
+          "duration": "19 hr 23 min",
+          "stops": 1,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Delta",
+          "price_text": "$1562",
+          "price_usd": 1562.0,
+          "departure": "7:50 AM on Tue, Dec 29",
+          "arrival": "7:46 AM on Wed, Dec 30",
+          "arrival_time_ahead": "+1",
+          "duration": "31 hr 56 min",
+          "stops": 1,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Delta",
+          "price_text": "$1562",
+          "price_usd": 1562.0,
+          "departure": "7:50 AM on Tue, Dec 29",
+          "arrival": "7:13 PM on Tue, Dec 29",
+          "arrival_time_ahead": "",
+          "duration": "19 hr 23 min",
+          "stops": 1,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Delta",
+          "price_text": "$1562",
+          "price_usd": 1562.0,
+          "departure": "7:50 AM on Tue, Dec 29",
+          "arrival": "7:46 AM on Wed, Dec 30",
+          "arrival_time_ahead": "+1",
+          "duration": "31 hr 56 min",
+          "stops": 1,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Delta",
+          "price_text": "$1576",
+          "price_usd": 1576.0,
+          "departure": "8:00 PM on Tue, Dec 29",
+          "arrival": "1:45 PM on Wed, Dec 30",
+          "arrival_time_ahead": "+1",
+          "duration": "25 hr 45 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Delta",
+          "price_text": "$1576",
+          "price_usd": 1576.0,
+          "departure": "8:00 PM on Tue, Dec 29",
+          "arrival": "1:45 PM on Wed, Dec 30",
+          "arrival_time_ahead": "+1",
+          "duration": "25 hr 45 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Delta",
+          "price_text": "$1594",
+          "price_usd": 1594.0,
+          "departure": "8:00 PM on Tue, Dec 29",
+          "arrival": "2:59 PM on Wed, Dec 30",
+          "arrival_time_ahead": "+1",
+          "duration": "26 hr 59 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Delta",
+          "price_text": "$1594",
+          "price_usd": 1594.0,
+          "departure": "8:00 PM on Tue, Dec 29",
+          "arrival": "2:59 PM on Wed, Dec 30",
+          "arrival_time_ahead": "+1",
+          "duration": "26 hr 59 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        }
+      ],
+      "flying_blue_best": null,
+      "delta_best": {
+        "date": "2026-12-29",
+        "program": "Delta SkyMiles",
+        "program_raw": "Delta SkyMiles",
+        "program_code": "DL",
+        "miles": 6300,
+        "tax_usd": 38,
+        "cash_price_field": 0,
+        "cabin": "Economy",
+        "seats": 9999,
+        "duration_minutes": 167,
+        "segments": [
+          {
+            "duration": 71,
+            "flight_number": "DL6637",
+            "aircraft": "Airbus A321 NEO': 'Airbus A321 Neo",
+            "dt": "2026-12-29T22:01:00",
+            "da": "JED",
+            "at": "2026-12-29T23:12:00",
+            "aa": "DTW",
+            "layover": 0,
+            "cabin": "Economy"
+          }
+        ],
+        "route": "JED-DTW",
+        "flight_numbers": [
+          "DL6637"
+        ],
+        "booking_code": null,
+        "booking_url": ""
+      },
+      "award_options": [
+        {
+          "date": "2026-12-29",
+          "program": "Delta SkyMiles",
+          "program_raw": "Delta SkyMiles",
+          "program_code": "DL",
+          "miles": 6300,
+          "tax_usd": 38,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 167,
+          "segments": [
+            {
+              "duration": 71,
+              "flight_number": "DL6637",
+              "aircraft": "Airbus A321 NEO': 'Airbus A321 Neo",
+              "dt": "2026-12-29T22:01:00",
+              "da": "JED",
+              "at": "2026-12-29T23:12:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "DL6637"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        }
+      ],
+      "cash_error": null
+    },
+    {
+      "date": "2026-12-30",
+      "cash_best": {
+        "airlines": "Saudia, Air France",
+        "price_text": "$1071",
+        "price_usd": 1071.0,
+        "departure": "8:30 PM on Wed, Dec 30",
+        "arrival": "7:15 PM on Thu, Dec 31",
+        "arrival_time_ahead": "+1",
+        "duration": "30 hr 45 min",
+        "stops": 2,
+        "is_best": true,
+        "delay": null
+      },
+      "cash_options": [
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1071",
+          "price_usd": 1071.0,
+          "departure": "8:30 PM on Wed, Dec 30",
+          "arrival": "7:15 PM on Thu, Dec 31",
+          "arrival_time_ahead": "+1",
+          "duration": "30 hr 45 min",
+          "stops": 2,
+          "is_best": true,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1071",
+          "price_usd": 1071.0,
+          "departure": "8:30 PM on Wed, Dec 30",
+          "arrival": "7:15 PM on Thu, Dec 31",
+          "arrival_time_ahead": "+1",
+          "duration": "30 hr 45 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Delta",
+          "price_text": "$1541",
+          "price_usd": 1541.0,
+          "departure": "7:30 PM on Wed, Dec 30",
+          "arrival": "3:08 PM on Thu, Dec 31",
+          "arrival_time_ahead": "+1",
+          "duration": "27 hr 38 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Delta",
+          "price_text": "$1541",
+          "price_usd": 1541.0,
+          "departure": "8:00 PM on Wed, Dec 30",
+          "arrival": "3:08 PM on Thu, Dec 31",
+          "arrival_time_ahead": "+1",
+          "duration": "27 hr 8 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Delta",
+          "price_text": "$1541",
+          "price_usd": 1541.0,
+          "departure": "7:30 PM on Wed, Dec 30",
+          "arrival": "3:08 PM on Thu, Dec 31",
+          "arrival_time_ahead": "+1",
+          "duration": "27 hr 38 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Delta",
+          "price_text": "$1541",
+          "price_usd": 1541.0,
+          "departure": "8:00 PM on Wed, Dec 30",
+          "arrival": "3:08 PM on Thu, Dec 31",
+          "arrival_time_ahead": "+1",
+          "duration": "27 hr 8 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1971",
+          "price_usd": 1971.0,
+          "departure": "10:20 PM on Wed, Dec 30",
+          "arrival": "7:15 PM on Thu, Dec 31",
+          "arrival_time_ahead": "+1",
+          "duration": "28 hr 55 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1971",
+          "price_usd": 1971.0,
+          "departure": "10:20 PM on Wed, Dec 30",
+          "arrival": "7:15 PM on Thu, Dec 31",
+          "arrival_time_ahead": "+1",
+          "duration": "28 hr 55 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        }
+      ],
+      "flying_blue_best": {
+        "date": "2026-12-30",
+        "program": "Flying Blue",
+        "program_raw": "Air France/KLM Flying Blue",
+        "program_code": "KL",
+        "miles": 7000,
+        "tax_usd": 61,
+        "cash_price_field": 0,
+        "cabin": "Economy",
+        "seats": 9999,
+        "duration_minutes": 127,
+        "segments": [
+          {
+            "duration": 128,
+            "flight_number": "KL2013",
+            "aircraft": "73D': 'Boeing 737-700",
+            "dt": "2026-12-30T17:37:00",
+            "da": "JED",
+            "at": "2026-12-30T19:45:00",
+            "aa": "DTW",
+            "layover": 0,
+            "cabin": "Economy"
+          }
+        ],
+        "route": "JED-DTW",
+        "flight_numbers": [
+          "KL2013"
+        ],
+        "booking_code": null,
+        "booking_url": ""
+      },
+      "delta_best": {
+        "date": "2026-12-30",
+        "program": "Delta SkyMiles",
+        "program_raw": "Delta SkyMiles",
+        "program_code": "DL",
+        "miles": 4200,
+        "tax_usd": 67,
+        "cash_price_field": 0,
+        "cabin": "Economy",
+        "seats": 9999,
+        "duration_minutes": 186,
+        "segments": [
+          {
+            "duration": 228,
+            "flight_number": "DL188",
+            "aircraft": "Embraer 175': 'ERJ 175",
+            "dt": "2026-12-30T15:25:00",
+            "da": "JED",
+            "at": "2026-12-30T19:13:00",
+            "aa": "DTW",
+            "layover": 0,
+            "cabin": "Economy"
+          }
+        ],
+        "route": "JED-DTW",
+        "flight_numbers": [
+          "DL188"
+        ],
+        "booking_code": null,
+        "booking_url": ""
+      },
+      "award_options": [
+        {
+          "date": "2026-12-30",
+          "program": "Delta SkyMiles",
+          "program_raw": "Delta SkyMiles",
+          "program_code": "DL",
+          "miles": 4200,
+          "tax_usd": 67,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 186,
+          "segments": [
+            {
+              "duration": 228,
+              "flight_number": "DL188",
+              "aircraft": "Embraer 175': 'ERJ 175",
+              "dt": "2026-12-30T15:25:00",
+              "da": "JED",
+              "at": "2026-12-30T19:13:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "DL188"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        },
+        {
+          "date": "2026-12-30",
+          "program": "Delta SkyMiles",
+          "program_raw": "Delta SkyMiles",
+          "program_code": "DL",
+          "miles": 6600,
+          "tax_usd": 33,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 240,
+          "segments": [
+            {
+              "duration": 236,
+              "flight_number": "DL9787",
+              "aircraft": "Boeing 717-200': 'Boeing 717",
+              "dt": "2026-12-30T03:57:00",
+              "da": "JED",
+              "at": "2026-12-30T07:53:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "DL9787"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        },
+        {
+          "date": "2026-12-30",
+          "program": "Flying Blue",
+          "program_raw": "Air France/KLM Flying Blue",
+          "program_code": "KL",
+          "miles": 7000,
+          "tax_usd": 61,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 127,
+          "segments": [
+            {
+              "duration": 128,
+              "flight_number": "KL2013",
+              "aircraft": "73D': 'Boeing 737-700",
+              "dt": "2026-12-30T17:37:00",
+              "da": "JED",
+              "at": "2026-12-30T19:45:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "KL2013"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        }
+      ],
+      "cash_error": null
+    },
+    {
+      "date": "2026-12-31",
+      "cash_best": {
+        "airlines": "Saudia, Air France",
+        "price_text": "$1070",
+        "price_usd": 1070.0,
+        "departure": "4:00 AM on Thu, Dec 31",
+        "arrival": "7:15 PM on Thu, Dec 31",
+        "arrival_time_ahead": "",
+        "duration": "23 hr 15 min",
+        "stops": 2,
+        "is_best": true,
+        "delay": null
+      },
+      "cash_options": [
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1070",
+          "price_usd": 1070.0,
+          "departure": "4:00 AM on Thu, Dec 31",
+          "arrival": "7:15 PM on Thu, Dec 31",
+          "arrival_time_ahead": "",
+          "duration": "23 hr 15 min",
+          "stops": 2,
+          "is_best": true,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1070",
+          "price_usd": 1070.0,
+          "departure": "4:00 AM on Thu, Dec 31",
+          "arrival": "7:15 PM on Thu, Dec 31",
+          "arrival_time_ahead": "",
+          "duration": "23 hr 15 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1302",
+          "price_usd": 1302.0,
+          "departure": "12:05 AM on Thu, Dec 31",
+          "arrival": "7:15 PM on Thu, Dec 31",
+          "arrival_time_ahead": "",
+          "duration": "27 hr 10 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1302",
+          "price_usd": 1302.0,
+          "departure": "1:00 AM on Thu, Dec 31",
+          "arrival": "7:15 PM on Thu, Dec 31",
+          "arrival_time_ahead": "",
+          "duration": "26 hr 15 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1302",
+          "price_usd": 1302.0,
+          "departure": "2:00 AM on Thu, Dec 31",
+          "arrival": "7:15 PM on Thu, Dec 31",
+          "arrival_time_ahead": "",
+          "duration": "25 hr 15 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1302",
+          "price_usd": 1302.0,
+          "departure": "12:05 AM on Thu, Dec 31",
+          "arrival": "7:15 PM on Thu, Dec 31",
+          "arrival_time_ahead": "",
+          "duration": "27 hr 10 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1302",
+          "price_usd": 1302.0,
+          "departure": "1:00 AM on Thu, Dec 31",
+          "arrival": "7:15 PM on Thu, Dec 31",
+          "arrival_time_ahead": "",
+          "duration": "26 hr 15 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1302",
+          "price_usd": 1302.0,
+          "departure": "2:00 AM on Thu, Dec 31",
+          "arrival": "7:15 PM on Thu, Dec 31",
+          "arrival_time_ahead": "",
+          "duration": "25 hr 15 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        }
+      ],
+      "flying_blue_best": {
+        "date": "2026-12-31",
+        "program": "Flying Blue",
+        "program_raw": "Air France/KLM Flying Blue",
+        "program_code": "KL",
+        "miles": 9100,
+        "tax_usd": 89,
+        "cash_price_field": 0,
+        "cabin": "Economy",
+        "seats": 9999,
+        "duration_minutes": 65,
+        "segments": [
+          {
+            "duration": 188,
+            "flight_number": "KL423",
+            "aircraft": "Airbus A380-800 Passenger': 'Airbus A380-800",
+            "dt": "2026-12-31T12:27:00",
+            "da": "JED",
+            "at": "2026-12-31T15:35:00",
+            "aa": "DTW",
+            "layover": 0,
+            "cabin": "Economy"
+          }
+        ],
+        "route": "JED-DTW",
+        "flight_numbers": [
+          "KL423"
+        ],
+        "booking_code": null,
+        "booking_url": ""
+      },
+      "delta_best": {
+        "date": "2026-12-31",
+        "program": "Delta SkyMiles",
+        "program_raw": "Delta SkyMiles",
+        "program_code": "DL",
+        "miles": 4400,
+        "tax_usd": 14,
+        "cash_price_field": 0,
+        "cabin": "Economy",
+        "seats": 9999,
+        "duration_minutes": 231,
+        "segments": [
+          {
+            "duration": 202,
+            "flight_number": "DL9688",
+            "aircraft": "Airbus A320",
+            "dt": "2026-12-31T16:35:00",
+            "da": "JED",
+            "at": "2026-12-31T19:57:00",
+            "aa": "DTW",
+            "layover": 0,
+            "cabin": "Economy"
+          }
+        ],
+        "route": "JED-DTW",
+        "flight_numbers": [
+          "DL9688"
+        ],
+        "booking_code": null,
+        "booking_url": ""
+      },
+      "award_options": [
+        {
+          "date": "2026-12-31",
+          "program": "Delta SkyMiles",
+          "program_raw": "Delta SkyMiles",
+          "program_code": "DL",
+          "miles": 4400,
+          "tax_usd": 14,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 231,
+          "segments": [
+            {
+              "duration": 202,
+              "flight_number": "DL9688",
+              "aircraft": "Airbus A320",
+              "dt": "2026-12-31T16:35:00",
+              "da": "JED",
+              "at": "2026-12-31T19:57:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "DL9688"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        },
+        {
+          "date": "2026-12-31",
+          "program": "Delta SkyMiles",
+          "program_raw": "Delta SkyMiles",
+          "program_code": "DL",
+          "miles": 14800,
+          "tax_usd": 8,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 114,
+          "segments": [
+            {
+              "duration": 83,
+              "flight_number": "DL326",
+              "aircraft": "Airbus A321': 'Airbus A321",
+              "dt": "2026-12-31T16:04:00",
+              "da": "JED",
+              "at": "2026-12-31T17:27:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "DL326"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        },
+        {
+          "date": "2026-12-31",
+          "program": "Flying Blue",
+          "program_raw": "Air France/KLM Flying Blue",
+          "program_code": "KL",
+          "miles": 9100,
+          "tax_usd": 89,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 65,
+          "segments": [
+            {
+              "duration": 188,
+              "flight_number": "KL423",
+              "aircraft": "Airbus A380-800 Passenger': 'Airbus A380-800",
+              "dt": "2026-12-31T12:27:00",
+              "da": "JED",
+              "at": "2026-12-31T15:35:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "KL423"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        }
+      ],
+      "cash_error": null
+    },
+    {
+      "date": "2027-01-01",
+      "cash_best": {
+        "airlines": "Saudia, Air France",
+        "price_text": "$2495",
+        "price_usd": 2495.0,
+        "departure": "8:05 AM on Fri, Jan 1",
+        "arrival": "7:15 PM on Fri, Jan 1",
+        "arrival_time_ahead": "",
+        "duration": "19 hr 10 min",
+        "stops": 1,
+        "is_best": false,
+        "delay": null
+      },
+      "cash_options": [
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$2495",
+          "price_usd": 2495.0,
+          "departure": "8:05 AM on Fri, Jan 1",
+          "arrival": "7:15 PM on Fri, Jan 1",
+          "arrival_time_ahead": "",
+          "duration": "19 hr 10 min",
+          "stops": 1,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$2495",
+          "price_usd": 2495.0,
+          "departure": "8:05 AM on Fri, Jan 1",
+          "arrival": "7:15 PM on Fri, Jan 1",
+          "arrival_time_ahead": "",
+          "duration": "19 hr 10 min",
+          "stops": 1,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Delta",
+          "price_text": "$2501",
+          "price_usd": 2501.0,
+          "departure": "8:05 AM on Fri, Jan 1",
+          "arrival": "9:42 PM on Fri, Jan 1",
+          "arrival_time_ahead": "",
+          "duration": "21 hr 37 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Delta",
+          "price_text": "$2501",
+          "price_usd": 2501.0,
+          "departure": "8:05 AM on Fri, Jan 1",
+          "arrival": "9:42 PM on Fri, Jan 1",
+          "arrival_time_ahead": "",
+          "duration": "21 hr 37 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$2559",
+          "price_usd": 2559.0,
+          "departure": "1:05 AM on Fri, Jan 1",
+          "arrival": "7:15 PM on Fri, Jan 1",
+          "arrival_time_ahead": "",
+          "duration": "26 hr 10 min",
+          "stops": 1,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$2559",
+          "price_usd": 2559.0,
+          "departure": "1:05 AM on Fri, Jan 1",
+          "arrival": "7:15 PM on Fri, Jan 1",
+          "arrival_time_ahead": "",
+          "duration": "26 hr 10 min",
+          "stops": 1,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, KLM, Delta",
+          "price_text": "$2967",
+          "price_usd": 2967.0,
+          "departure": "9:00 PM on Fri, Jan 1",
+          "arrival": "1:16 PM on Sat, Jan 2",
+          "arrival_time_ahead": "+1",
+          "duration": "24 hr 16 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, KLM, Delta",
+          "price_text": "$2967",
+          "price_usd": 2967.0,
+          "departure": "9:00 PM on Fri, Jan 1",
+          "arrival": "1:16 PM on Sat, Jan 2",
+          "arrival_time_ahead": "+1",
+          "duration": "24 hr 16 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        }
+      ],
+      "flying_blue_best": {
+        "date": "2027-01-01",
+        "program": "Flying Blue",
+        "program_raw": "Air France/KLM Flying Blue",
+        "program_code": "KL",
+        "miles": 2700,
+        "tax_usd": 41,
+        "cash_price_field": 0,
+        "cabin": "Economy",
+        "seats": 9999,
+        "duration_minutes": 125,
+        "segments": [
+          {
+            "duration": 87,
+            "flight_number": "KL9393",
+            "aircraft": "Boeing 777-200/300': 'Boeing 777-300",
+            "dt": "2027-01-01T11:40:00",
+            "da": "JED",
+            "at": "2027-01-01T13:07:00",
+            "aa": "DTW",
+            "layover": 0,
+            "cabin": "Economy"
+          }
+        ],
+        "route": "JED-DTW",
+        "flight_numbers": [
+          "KL9393"
+        ],
+        "booking_code": null,
+        "booking_url": ""
+      },
+      "delta_best": {
+        "date": "2027-01-01",
+        "program": "Delta SkyMiles",
+        "program_raw": "Delta SkyMiles",
+        "program_code": "DL",
+        "miles": 3300,
+        "tax_usd": 20,
+        "cash_price_field": 0,
+        "cabin": "Economy",
+        "seats": 9999,
+        "duration_minutes": 143,
+        "segments": [
+          {
+            "duration": 153,
+            "flight_number": "DL9281",
+            "aircraft": "A321 LR': 'Airbus A321LR",
+            "dt": "2027-01-01T19:59:00",
+            "da": "JED",
+            "at": "2027-01-01T22:32:00",
+            "aa": "DTW",
+            "layover": 0,
+            "cabin": "Economy"
+          }
+        ],
+        "route": "JED-DTW",
+        "flight_numbers": [
+          "DL9281"
+        ],
+        "booking_code": null,
+        "booking_url": ""
+      },
+      "award_options": [
+        {
+          "date": "2027-01-01",
+          "program": "Delta SkyMiles",
+          "program_raw": "Delta SkyMiles",
+          "program_code": "DL",
+          "miles": 3300,
+          "tax_usd": 20,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 143,
+          "segments": [
+            {
+              "duration": 153,
+              "flight_number": "DL9281",
+              "aircraft": "A321 LR': 'Airbus A321LR",
+              "dt": "2027-01-01T19:59:00",
+              "da": "JED",
+              "at": "2027-01-01T22:32:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "DL9281"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        },
+        {
+          "date": "2027-01-01",
+          "program": "Flying Blue",
+          "program_raw": "Air France/KLM Flying Blue",
+          "program_code": "KL",
+          "miles": 2700,
+          "tax_usd": 41,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 125,
+          "segments": [
+            {
+              "duration": 87,
+              "flight_number": "KL9393",
+              "aircraft": "Boeing 777-200/300': 'Boeing 777-300",
+              "dt": "2027-01-01T11:40:00",
+              "da": "JED",
+              "at": "2027-01-01T13:07:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "KL9393"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        }
+      ],
+      "cash_error": null
+    },
+    {
+      "date": "2027-01-02",
+      "cash_best": {
+        "airlines": "Saudia, KLM, Delta",
+        "price_text": "$2469",
+        "price_usd": 2469.0,
+        "departure": "9:00 PM on Sat, Jan 2",
+        "arrival": "1:16 PM on Sun, Jan 3",
+        "arrival_time_ahead": "+1",
+        "duration": "24 hr 16 min",
+        "stops": 2,
+        "is_best": true,
+        "delay": null
+      },
+      "cash_options": [
+        {
+          "airlines": "Saudia, KLM, Delta",
+          "price_text": "$2469",
+          "price_usd": 2469.0,
+          "departure": "9:00 PM on Sat, Jan 2",
+          "arrival": "1:16 PM on Sun, Jan 3",
+          "arrival_time_ahead": "+1",
+          "duration": "24 hr 16 min",
+          "stops": 2,
+          "is_best": true,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, KLM, Delta",
+          "price_text": "$2469",
+          "price_usd": 2469.0,
+          "departure": "9:00 PM on Sat, Jan 2",
+          "arrival": "1:16 PM on Sun, Jan 3",
+          "arrival_time_ahead": "+1",
+          "duration": "24 hr 16 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$2982",
+          "price_usd": 2982.0,
+          "departure": "4:00 AM on Sat, Jan 2",
+          "arrival": "7:15 PM on Sat, Jan 2",
+          "arrival_time_ahead": "",
+          "duration": "23 hr 15 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$2982",
+          "price_usd": 2982.0,
+          "departure": "4:00 AM on Sat, Jan 2",
+          "arrival": "7:15 PM on Sat, Jan 2",
+          "arrival_time_ahead": "",
+          "duration": "23 hr 15 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$3155",
+          "price_usd": 3155.0,
+          "departure": "1:00 AM on Sat, Jan 2",
+          "arrival": "7:15 PM on Sat, Jan 2",
+          "arrival_time_ahead": "",
+          "duration": "26 hr 15 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$3155",
+          "price_usd": 3155.0,
+          "departure": "2:00 AM on Sat, Jan 2",
+          "arrival": "7:15 PM on Sat, Jan 2",
+          "arrival_time_ahead": "",
+          "duration": "25 hr 15 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$3155",
+          "price_usd": 3155.0,
+          "departure": "1:00 AM on Sat, Jan 2",
+          "arrival": "7:15 PM on Sat, Jan 2",
+          "arrival_time_ahead": "",
+          "duration": "26 hr 15 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$3155",
+          "price_usd": 3155.0,
+          "departure": "2:00 AM on Sat, Jan 2",
+          "arrival": "7:15 PM on Sat, Jan 2",
+          "arrival_time_ahead": "",
+          "duration": "25 hr 15 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        }
+      ],
+      "flying_blue_best": {
+        "date": "2027-01-02",
+        "program": "Flying Blue",
+        "program_raw": "Air France/KLM Flying Blue",
+        "program_code": "KL",
+        "miles": 9200,
+        "tax_usd": 30,
+        "cash_price_field": 0,
+        "cabin": "Economy",
+        "seats": 9999,
+        "duration_minutes": 210,
+        "segments": [
+          {
+            "duration": 128,
+            "flight_number": "KL7079",
+            "aircraft": "Airbus A350-900': 'Airbus A359",
+            "dt": "2027-01-02T08:21:00",
+            "da": "JED",
+            "at": "2027-01-02T10:29:00",
+            "aa": "DTW",
+            "layover": 0,
+            "cabin": "Economy"
+          }
+        ],
+        "route": "JED-DTW",
+        "flight_numbers": [
+          "KL7079"
+        ],
+        "booking_code": null,
+        "booking_url": ""
+      },
+      "delta_best": null,
+      "award_options": [
+        {
+          "date": "2027-01-02",
+          "program": "Flying Blue",
+          "program_raw": "Air France/KLM Flying Blue",
+          "program_code": "KL",
+          "miles": 9200,
+          "tax_usd": 30,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 210,
+          "segments": [
+            {
+              "duration": 128,
+              "flight_number": "KL7079",
+              "aircraft": "Airbus A350-900': 'Airbus A359",
+              "dt": "2027-01-02T08:21:00",
+              "da": "JED",
+              "at": "2027-01-02T10:29:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "KL7079"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        }
+      ],
+      "cash_error": null
+    },
+    {
+      "date": "2027-01-03",
+      "cash_best": {
+        "airlines": "Saudia, Air France",
+        "price_text": "$2113",
+        "price_usd": 2113.0,
+        "departure": "10:20 PM on Sun, Jan 3",
+        "arrival": "7:05 PM on Mon, Jan 4",
+        "arrival_time_ahead": "+1",
+        "duration": "28 hr 45 min",
+        "stops": 2,
+        "is_best": false,
+        "delay": null
+      },
+      "cash_options": [
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$2113",
+          "price_usd": 2113.0,
+          "departure": "10:20 PM on Sun, Jan 3",
+          "arrival": "7:05 PM on Mon, Jan 4",
+          "arrival_time_ahead": "+1",
+          "duration": "28 hr 45 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$2113",
+          "price_usd": 2113.0,
+          "departure": "10:20 PM on Sun, Jan 3",
+          "arrival": "7:05 PM on Mon, Jan 4",
+          "arrival_time_ahead": "+1",
+          "duration": "28 hr 45 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, KLM, Delta",
+          "price_text": "$3064",
+          "price_usd": 3064.0,
+          "departure": "8:00 AM on Sun, Jan 3",
+          "arrival": "12:55 AM on Mon, Jan 4",
+          "arrival_time_ahead": "+1",
+          "duration": "24 hr 55 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, KLM, Delta",
+          "price_text": "$3064",
+          "price_usd": 3064.0,
+          "departure": "8:00 AM on Sun, Jan 3",
+          "arrival": "12:55 AM on Mon, Jan 4",
+          "arrival_time_ahead": "+1",
+          "duration": "24 hr 55 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$3073",
+          "price_usd": 3073.0,
+          "departure": "1:05 AM on Sun, Jan 3",
+          "arrival": "7:15 PM on Sun, Jan 3",
+          "arrival_time_ahead": "",
+          "duration": "26 hr 10 min",
+          "stops": 1,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$3073",
+          "price_usd": 3073.0,
+          "departure": "8:05 AM on Sun, Jan 3",
+          "arrival": "7:15 PM on Sun, Jan 3",
+          "arrival_time_ahead": "",
+          "duration": "19 hr 10 min",
+          "stops": 1,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$3073",
+          "price_usd": 3073.0,
+          "departure": "1:05 AM on Sun, Jan 3",
+          "arrival": "7:15 PM on Sun, Jan 3",
+          "arrival_time_ahead": "",
+          "duration": "26 hr 10 min",
+          "stops": 1,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$3073",
+          "price_usd": 3073.0,
+          "departure": "8:05 AM on Sun, Jan 3",
+          "arrival": "7:15 PM on Sun, Jan 3",
+          "arrival_time_ahead": "",
+          "duration": "19 hr 10 min",
+          "stops": 1,
+          "is_best": false,
+          "delay": null
+        }
+      ],
+      "flying_blue_best": {
+        "date": "2027-01-03",
+        "program": "Flying Blue",
+        "program_raw": "Air France/KLM Flying Blue",
+        "program_code": "KL",
+        "miles": 9300,
+        "tax_usd": 19,
+        "cash_price_field": 0,
+        "cabin": "Economy",
+        "seats": 9999,
+        "duration_minutes": 211,
+        "segments": [
+          {
+            "duration": 202,
+            "flight_number": "KL167",
+            "aircraft": "Boeing 767-300': 'Boeing 767-300",
+            "dt": "2027-01-03T10:19:00",
+            "da": "JED",
+            "at": "2027-01-03T13:41:00",
+            "aa": "DTW",
+            "layover": 0,
+            "cabin": "Economy"
+          }
+        ],
+        "route": "JED-DTW",
+        "flight_numbers": [
+          "KL167"
+        ],
+        "booking_code": null,
+        "booking_url": ""
+      },
+      "delta_best": {
+        "date": "2027-01-03",
+        "program": "Delta SkyMiles",
+        "program_raw": "Delta SkyMiles",
+        "program_code": "DL",
+        "miles": 8200,
+        "tax_usd": 88,
+        "cash_price_field": 0,
+        "cabin": "Economy",
+        "seats": 9999,
+        "duration_minutes": 104,
+        "segments": [
+          {
+            "duration": 172,
+            "flight_number": "DL4228",
+            "aircraft": "Boeing 757-300 (winglets) Passenger': 'Boeing 757-300 (Winglets)",
+            "dt": "2027-01-03T06:55:00",
+            "da": "JED",
+            "at": "2027-01-03T09:47:00",
+            "aa": "DTW",
+            "layover": 0,
+            "cabin": "Economy"
+          }
+        ],
+        "route": "JED-DTW",
+        "flight_numbers": [
+          "DL4228"
+        ],
+        "booking_code": null,
+        "booking_url": ""
+      },
+      "award_options": [
+        {
+          "date": "2027-01-03",
+          "program": "Delta SkyMiles",
+          "program_raw": "Delta SkyMiles",
+          "program_code": "DL",
+          "miles": 8200,
+          "tax_usd": 88,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 104,
+          "segments": [
+            {
+              "duration": 172,
+              "flight_number": "DL4228",
+              "aircraft": "Boeing 757-300 (winglets) Passenger': 'Boeing 757-300 (Winglets)",
+              "dt": "2027-01-03T06:55:00",
+              "da": "JED",
+              "at": "2027-01-03T09:47:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "DL4228"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        },
+        {
+          "date": "2027-01-03",
+          "program": "Flying Blue",
+          "program_raw": "Air France/KLM Flying Blue",
+          "program_code": "KL",
+          "miles": 9300,
+          "tax_usd": 19,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 211,
+          "segments": [
+            {
+              "duration": 202,
+              "flight_number": "KL167",
+              "aircraft": "Boeing 767-300': 'Boeing 767-300",
+              "dt": "2027-01-03T10:19:00",
+              "da": "JED",
+              "at": "2027-01-03T13:41:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "KL167"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        }
+      ],
+      "cash_error": null
+    },
+    {
+      "date": "2027-01-04",
+      "cash_best": {
+        "airlines": "Saudia, Air France",
+        "price_text": "$1942",
+        "price_usd": 1942.0,
+        "departure": "10:00 PM on Mon, Jan 4",
+        "arrival": "7:05 PM on Tue, Jan 5",
+        "arrival_time_ahead": "+1",
+        "duration": "29 hr 5 min",
+        "stops": 2,
+        "is_best": false,
+        "delay": null
+      },
+      "cash_options": [
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1942",
+          "price_usd": 1942.0,
+          "departure": "10:00 PM on Mon, Jan 4",
+          "arrival": "7:05 PM on Tue, Jan 5",
+          "arrival_time_ahead": "+1",
+          "duration": "29 hr 5 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1942",
+          "price_usd": 1942.0,
+          "departure": "11:00 PM on Mon, Jan 4",
+          "arrival": "7:05 PM on Tue, Jan 5",
+          "arrival_time_ahead": "+1",
+          "duration": "28 hr 5 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1942",
+          "price_usd": 1942.0,
+          "departure": "10:00 PM on Mon, Jan 4",
+          "arrival": "7:05 PM on Tue, Jan 5",
+          "arrival_time_ahead": "+1",
+          "duration": "29 hr 5 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1942",
+          "price_usd": 1942.0,
+          "departure": "11:00 PM on Mon, Jan 4",
+          "arrival": "7:05 PM on Tue, Jan 5",
+          "arrival_time_ahead": "+1",
+          "duration": "28 hr 5 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$2113",
+          "price_usd": 2113.0,
+          "departure": "10:20 PM on Mon, Jan 4",
+          "arrival": "7:05 PM on Tue, Jan 5",
+          "arrival_time_ahead": "+1",
+          "duration": "28 hr 45 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$2113",
+          "price_usd": 2113.0,
+          "departure": "10:20 PM on Mon, Jan 4",
+          "arrival": "7:05 PM on Tue, Jan 5",
+          "arrival_time_ahead": "+1",
+          "duration": "28 hr 45 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$2309",
+          "price_usd": 2309.0,
+          "departure": "1:05 AM on Mon, Jan 4",
+          "arrival": "7:05 PM on Mon, Jan 4",
+          "arrival_time_ahead": "",
+          "duration": "26 hr",
+          "stops": 1,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$2309",
+          "price_usd": 2309.0,
+          "departure": "8:05 AM on Mon, Jan 4",
+          "arrival": "7:05 PM on Mon, Jan 4",
+          "arrival_time_ahead": "",
+          "duration": "19 hr",
+          "stops": 1,
+          "is_best": false,
+          "delay": null
+        }
+      ],
+      "flying_blue_best": null,
+      "delta_best": null,
+      "award_options": [],
+      "cash_error": null
+    },
+    {
+      "date": "2027-01-05",
+      "cash_best": {
+        "airlines": "Saudia, KLM, Delta",
+        "price_text": "$1568",
+        "price_usd": 1568.0,
+        "departure": "9:00 PM on Tue, Jan 5",
+        "arrival": "1:16 PM on Wed, Jan 6",
+        "arrival_time_ahead": "+1",
+        "duration": "24 hr 16 min",
+        "stops": 2,
+        "is_best": false,
+        "delay": null
+      },
+      "cash_options": [
+        {
+          "airlines": "Saudia, KLM, Delta",
+          "price_text": "$1568",
+          "price_usd": 1568.0,
+          "departure": "9:00 PM on Tue, Jan 5",
+          "arrival": "1:16 PM on Wed, Jan 6",
+          "arrival_time_ahead": "+1",
+          "duration": "24 hr 16 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, KLM, Delta",
+          "price_text": "$1568",
+          "price_usd": 1568.0,
+          "departure": "9:00 PM on Tue, Jan 5",
+          "arrival": "1:16 PM on Wed, Jan 6",
+          "arrival_time_ahead": "+1",
+          "duration": "24 hr 16 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Delta",
+          "price_text": "$1576",
+          "price_usd": 1576.0,
+          "departure": "8:00 PM on Tue, Jan 5",
+          "arrival": "1:50 PM on Wed, Jan 6",
+          "arrival_time_ahead": "+1",
+          "duration": "25 hr 50 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Delta",
+          "price_text": "$1576",
+          "price_usd": 1576.0,
+          "departure": "8:00 PM on Tue, Jan 5",
+          "arrival": "1:50 PM on Wed, Jan 6",
+          "arrival_time_ahead": "+1",
+          "duration": "25 hr 50 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Delta",
+          "price_text": "$1606",
+          "price_usd": 1606.0,
+          "departure": "8:00 PM on Tue, Jan 5",
+          "arrival": "3:10 PM on Wed, Jan 6",
+          "arrival_time_ahead": "+1",
+          "duration": "27 hr 10 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Delta",
+          "price_text": "$1606",
+          "price_usd": 1606.0,
+          "departure": "8:00 PM on Tue, Jan 5",
+          "arrival": "3:10 PM on Wed, Jan 6",
+          "arrival_time_ahead": "+1",
+          "duration": "27 hr 10 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1710",
+          "price_usd": 1710.0,
+          "departure": "4:00 AM on Tue, Jan 5",
+          "arrival": "7:05 PM on Tue, Jan 5",
+          "arrival_time_ahead": "",
+          "duration": "23 hr 5 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        },
+        {
+          "airlines": "Saudia, Air France",
+          "price_text": "$1710",
+          "price_usd": 1710.0,
+          "departure": "4:00 AM on Tue, Jan 5",
+          "arrival": "7:05 PM on Tue, Jan 5",
+          "arrival_time_ahead": "",
+          "duration": "23 hr 5 min",
+          "stops": 2,
+          "is_best": false,
+          "delay": null
+        }
+      ],
+      "flying_blue_best": {
+        "date": "2027-01-05",
+        "program": "Flying Blue",
+        "program_raw": "Air France/KLM Flying Blue",
+        "program_code": "KL",
+        "miles": 9500,
+        "tax_usd": 7,
+        "cash_price_field": 0,
+        "cabin": "Economy",
+        "seats": 9999,
+        "duration_minutes": 218,
+        "segments": [
+          {
+            "duration": 230,
+            "flight_number": "KL5698",
+            "aircraft": "343': 'Airbus A343",
+            "dt": "2027-01-05T06:11:00",
+            "da": "JED",
+            "at": "2027-01-05T10:01:00",
+            "aa": "DTW",
+            "layover": 0,
+            "cabin": "Economy"
+          }
+        ],
+        "route": "JED-DTW",
+        "flight_numbers": [
+          "KL5698"
+        ],
+        "booking_code": null,
+        "booking_url": ""
+      },
+      "delta_best": null,
+      "award_options": [
+        {
+          "date": "2027-01-05",
+          "program": "Flying Blue",
+          "program_raw": "Air France/KLM Flying Blue",
+          "program_code": "KL",
+          "miles": 9500,
+          "tax_usd": 7,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 218,
+          "segments": [
+            {
+              "duration": 230,
+              "flight_number": "KL5698",
+              "aircraft": "343': 'Airbus A343",
+              "dt": "2027-01-05T06:11:00",
+              "da": "JED",
+              "at": "2027-01-05T10:01:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "KL5698"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        },
+        {
+          "date": "2027-01-05",
+          "program": "Flying Blue",
+          "program_raw": "Air France/KLM Flying Blue",
+          "program_code": "KL",
+          "miles": 12400,
+          "tax_usd": 72,
+          "cash_price_field": 0,
+          "cabin": "Economy",
+          "seats": 9999,
+          "duration_minutes": 234,
+          "segments": [
+            {
+              "duration": 196,
+              "flight_number": "KL5183",
+              "aircraft": "764': 'Boeing 767-400",
+              "dt": "2027-01-05T09:18:00",
+              "da": "JED",
+              "at": "2027-01-05T12:34:00",
+              "aa": "DTW",
+              "layover": 0,
+              "cabin": "Economy"
+            }
+          ],
+          "route": "JED-DTW",
+          "flight_numbers": [
+            "KL5183"
+          ],
+          "booking_code": null,
+          "booking_url": ""
+        }
+      ],
+      "cash_error": null
+    }
+  ],
+  "award_batch_errors": {},
+  "source_metadata": {
+    "started_at": "2026-10-12T21:26:54.731819+00:00",
+    "cash_source": "Google Flights via fast-flights",
+    "award_source": "PointsYeah anonymous public search"
+  }
+}
