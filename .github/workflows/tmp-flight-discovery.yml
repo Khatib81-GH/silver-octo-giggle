@@ -1,0 +1,95 @@
+name: Temporary flight search discovery
+
+on:
+  push:
+    branches:
+      - tmp-flight-search-20261012
+
+permissions:
+  contents: read
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Discover award API safely
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          import urllib.error
+          import urllib.request
+
+          def get(url):
+              req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 flight-research"})
+              try:
+                  with urllib.request.urlopen(req, timeout=30) as r:
+                      return r.status, r.headers.get("content-type", ""), r.read().decode("utf-8", "replace")
+              except urllib.error.HTTPError as e:
+                  return e.code, e.headers.get("content-type", ""), e.read().decode("utf-8", "replace")
+
+          def post_json(url, payload, headers=None):
+              body = json.dumps(payload).encode()
+              h = {"Content-Type": "application/json", "Accept": "application/json", "User-Agent": "Mozilla/5.0 flight-research"}
+              h.update(headers or {})
+              req = urllib.request.Request(url, data=body, headers=h, method="POST")
+              try:
+                  with urllib.request.urlopen(req, timeout=60) as r:
+                      return r.status, r.headers.get("content-type", ""), r.read().decode("utf-8", "replace")
+              except urllib.error.HTTPError as e:
+                  return e.code, e.headers.get("content-type", ""), e.read().decode("utf-8", "replace")
+
+          for url in [
+              "https://awardtravelfinder.com/.well-known/agent.json",
+              "https://awardtravelfinder.com/.well-known/openapi.yaml",
+          ]:
+              status, ctype, text = get(url)
+              print(f"=== GET {url} :: {status} {ctype} ===")
+              print(text[:120000])
+
+          status, ctype, text = post_json(
+              "https://awardtravelfinder.com/api/v1/agent/register",
+              {"agent_name": "ChatGPT-Mohamad-Flight-Search-20261012"},
+          )
+          print(f"=== REGISTER :: {status} {ctype} ===")
+          try:
+              payload = json.loads(text)
+          except Exception:
+              payload = {"raw": text[:2000]}
+          api_key = None
+          if isinstance(payload, dict):
+              for key in ("api_key", "key", "token", "access_token"):
+                  if isinstance(payload.get(key), str):
+                      api_key = payload[key]
+                      payload[key] = "<REDACTED>"
+              data = payload.get("data")
+              if isinstance(data, dict):
+                  for key in ("api_key", "key", "token", "access_token"):
+                      if isinstance(data.get(key), str):
+                          api_key = data[key]
+                          data[key] = "<REDACTED>"
+          print(json.dumps(payload, indent=2)[:10000])
+
+          if api_key:
+              headers = {"x-api-key": api_key}
+              candidates = [
+                  ("GET", "https://awardtravelfinder.com/api/v1/delta/availability?departure_code=JED&arrival_code=DTW&date=2026-12-30", None),
+                  ("GET", "https://awardtravelfinder.com/api/v1/search_all_airlines?departure_code=JED&arrival_code=DTW&date=2026-12-30&cabin=economy&flex_days=7", None),
+                  ("GET", "https://awardtravelfinder.com/api/v1/search-all-airlines?departure_code=JED&arrival_code=DTW&date=2026-12-30&cabin=economy&flex_days=7", None),
+                  ("POST", "https://awardtravelfinder.com/api/v1/search_all_airlines", {"departure_code":"JED","arrival_code":"DTW","date":"2026-12-30","cabin":"economy","flex_days":7}),
+                  ("POST", "https://awardtravelfinder.com/api/v1/search-all-airlines", {"departure_code":"JED","arrival_code":"DTW","date":"2026-12-30","cabin":"economy","flex_days":7}),
+              ]
+              for method, url, body in candidates:
+                  if method == "GET":
+                      req = urllib.request.Request(url, headers={"x-api-key": api_key, "Accept":"application/json", "User-Agent":"Mozilla/5.0 flight-research"})
+                      try:
+                          with urllib.request.urlopen(req, timeout=120) as r:
+                              st, ct, tx = r.status, r.headers.get("content-type", ""), r.read().decode("utf-8", "replace")
+                      except urllib.error.HTTPError as e:
+                          st, ct, tx = e.code, e.headers.get("content-type", ""), e.read().decode("utf-8", "replace")
+                  else:
+                      st, ct, tx = post_json(url, body, {"x-api-key": api_key})
+                  print(f"=== {method} {url} :: {st} {ct} ===")
+                  print(tx[:50000])
+          PY
