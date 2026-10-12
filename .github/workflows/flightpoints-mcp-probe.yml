@@ -1,0 +1,61 @@
+name: Temporary Flightpoints MCP probe
+
+on:
+  push:
+    branches:
+      - tmp/jed-dtw-fares-20261012
+    paths:
+      - .github/workflows/flightpoints-mcp-probe.yml
+      - scripts/flightpoints_mcp_probe.py
+
+permissions:
+  contents: write
+
+concurrency:
+  group: temporary-flightpoints-mcp-probe
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install MCP client
+        run: python -m pip install --upgrade 'mcp[cli]' httpx
+      - name: List tools and call award search
+        continue-on-error: true
+        env:
+          PYTHONUNBUFFERED: '1'
+        run: python scripts/flightpoints_mcp_probe.py
+      - name: Print diagnostics
+        if: always()
+        run: |
+          find results/flightpoints_probe -maxdepth 1 -type f -print -exec sh -c 'echo --- $1; sed -n "1,240p" "$1"' sh {} \; 2>/dev/null || true
+      - name: Upload diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: flightpoints-mcp-probe-results
+          path: results/flightpoints_probe/
+          if-no-files-found: warn
+          retention-days: 3
+      - name: Commit diagnostics to temporary branch
+        if: always()
+        run: |
+          if [ ! -d results/flightpoints_probe ]; then exit 0; fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add results/flightpoints_probe/
+          if git diff --cached --quiet; then
+            echo 'No diagnostic changes to commit.'
+          else
+            git commit -m 'Store temporary Flightpoints MCP diagnostics'
+            git push origin HEAD:tmp/jed-dtw-fares-20261012
+          fi
