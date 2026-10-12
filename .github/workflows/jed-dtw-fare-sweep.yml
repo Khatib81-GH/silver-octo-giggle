@@ -5,14 +5,14 @@ on:
     branches:
       - tmp/jed-dtw-fares-20261012
     paths:
-      - awardtool_probe_simple.py
+      - pointhound_probe.py
       - .github/workflows/jed-dtw-fare-sweep.yml
 
 permissions:
   contents: read
 
 jobs:
-  awardtool-probe:
+  pointhound-probe:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
@@ -27,20 +27,20 @@ jobs:
       - name: Install Playwright Python package
         run: python -m pip install playwright
 
-      - name: Inspect AwardTool search page
+      - name: Inspect Pointhound free search page
         id: probe
         continue-on-error: true
-        run: xvfb-run -a python awardtool_probe_simple.py
+        run: xvfb-run -a python pointhound_probe.py
 
       - name: Ensure results directory exists
         if: always()
         run: mkdir -p results && printf '%s\n' "step_outcome=${{ steps.probe.outcome }}" > results/workflow_status.txt
 
-      - name: Upload AwardTool probe
+      - name: Upload Pointhound probe
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: awardtool-probe
+          name: pointhound-probe
           path: results/
           if-no-files-found: warn
           retention-days: 3
