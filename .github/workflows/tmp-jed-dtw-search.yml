@@ -11,7 +11,7 @@ permissions:
 jobs:
   search:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
 
@@ -26,10 +26,14 @@ jobs:
       - name: Install search dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install requests fast-flights playwright beautifulsoup4 lxml
+          python -m pip install requests fast-flights playwright beautifulsoup4 lxml pyyaml
           python -m playwright install --with-deps chromium
           npm install playwright
           npx playwright install chromium
+
+      - name: Run AwardTravelFinder agent search
+        continue-on-error: true
+        run: python tmp_search/atf_search.py
 
       - name: Run Google Flights SkyTeam cash sweep
         continue-on-error: true
@@ -53,6 +57,7 @@ jobs:
           python - <<'PY'
           import json, pathlib
           names = [
+            'atf_agent.json','atf_openapi.yaml','atf_registration_redacted.json','atf_endpoints.json','atf_results.json',
             'cash_results.json','seats_aero_results.json','delta_awards.json',
             'afklm_probe.json','pointsyeah_raw.json','pointsyeah_filtered.json',
             'airfrance_reward.png','klm_reward.png','klm_alt.png'
@@ -72,6 +77,11 @@ jobs:
           name: jed-dtw-results
           path: |
             manifest.json
+            atf_agent.json
+            atf_openapi.yaml
+            atf_registration_redacted.json
+            atf_endpoints.json
+            atf_results.json
             cash_results.json
             seats_aero_results.json
             delta_awards.json
