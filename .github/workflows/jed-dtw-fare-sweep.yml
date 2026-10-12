@@ -5,16 +5,16 @@ on:
     branches:
       - tmp/jed-dtw-fares-20261012
     paths:
-      - mcp_probe.py
+      - delta_sweep.py
       - .github/workflows/jed-dtw-fare-sweep.yml
 
 permissions:
   contents: read
 
 jobs:
-  mcp-probe:
+  delta-award-sweep:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 18
     steps:
       - name: Check out branch
         uses: actions/checkout@v4
@@ -24,23 +24,29 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install requests
-        run: python -m pip install requests
+      - name: Clone proven Delta scraper
+        run: git clone --depth 1 https://github.com/louie3697/points-pilot-jobs.git /tmp/points-pilot-jobs
 
-      - name: Probe MCP endpoint and retain each response
-        id: probe
+      - name: Install browser scraper dependencies
+        run: python -m pip install --upgrade pip 'nodriver==0.50.3' 'websockets>=14,<15' 'httpx[http2]>=0.27' 'tenacity>=8.3' 'python-dotenv>=1.0'
+
+      - name: Run guest SkyMiles searches one date at a time
+        id: sweep
         continue-on-error: true
-        run: python mcp_probe.py
+        env:
+          SCRAPER_MIN_DELAY_S: '6'
+          SCRAPER_BLOCK_THRESHOLD: '1'
+        run: xvfb-run -a python delta_sweep.py
 
       - name: Ensure results directory exists
         if: always()
-        run: mkdir -p results && printf '%s\n' "step_outcome=${{ steps.probe.outcome }}" > results/workflow_status.txt
+        run: mkdir -p results && printf '%s\n' "step_outcome=${{ steps.sweep.outcome }}" > results/workflow_status.txt
 
-      - name: Upload probe results
+      - name: Upload SkyMiles results and checkpoints
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: award-mcp-probe
+          name: jed-dtw-skymiles-2026-12-25-to-2027-01-05
           path: results/
           if-no-files-found: warn
           retention-days: 3
