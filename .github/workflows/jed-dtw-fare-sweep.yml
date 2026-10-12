@@ -5,16 +5,16 @@ on:
     branches:
       - tmp/jed-dtw-fares-20261012
     paths:
-      - roame_probe.py
+      - roame_chunks.py
       - .github/workflows/jed-dtw-fare-sweep.yml
 
 permissions:
   contents: read
 
 jobs:
-  roame-probe:
+  roame-chunks:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 15
     steps:
       - name: Check out branch
         uses: actions/checkout@v4
@@ -27,20 +27,20 @@ jobs:
       - name: Install Playwright Python package
         run: python -m pip install playwright
 
-      - name: Probe Roame search form and network
-        id: probe
+      - name: Inspect client chunks for award-search API calls
+        id: inspect
         continue-on-error: true
-        run: xvfb-run -a python roame_probe.py
+        run: xvfb-run -a python roame_chunks.py
 
       - name: Ensure results directory exists
         if: always()
-        run: mkdir -p results && printf '%s\n' "step_outcome=${{ steps.probe.outcome }}" > results/workflow_status.txt
+        run: mkdir -p results && printf '%s\n' "step_outcome=${{ steps.inspect.outcome }}" > results/workflow_status.txt
 
-      - name: Upload Roame probe
+      - name: Upload chunk analysis
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: roame-probe
+          name: roame-chunks
           path: results/
           if-no-files-found: warn
           retention-days: 3
