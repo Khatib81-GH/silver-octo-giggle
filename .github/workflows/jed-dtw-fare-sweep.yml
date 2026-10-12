@@ -5,6 +5,7 @@ on:
     branches:
       - tmp/jed-dtw-fares-20261012
     paths:
+      - cash_only_v2.py
       - cash_only.py
       - fare_sweep.py
       - fare_sweep_v2.py
@@ -29,10 +30,10 @@ jobs:
       - name: Install cash-search parser and dependencies
         run: python -m pip install --upgrade pip typing_extensions pycryptodome requests 'git+https://github.com/AWeirdDev/flights.git@dev'
 
-      - name: Retry cash source only, date by date
+      - name: Capture alliance-filtered cash options date by date
         id: sweep
         continue-on-error: true
-        run: python cash_only.py
+        run: python cash_only_v2.py
 
       - name: Ensure results directory exists
         if: always()
