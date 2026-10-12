@@ -5,14 +5,14 @@ on:
     branches:
       - tmp/jed-dtw-fares-20261012
     paths:
-      - roame_interact_probe_v3.py
+      - roame_direct_test.py
       - .github/workflows/jed-dtw-fare-sweep.yml
 
 permissions:
   contents: read
 
 jobs:
-  roame-interact-v3:
+  roame-direct-test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -27,20 +27,20 @@ jobs:
       - name: Install Playwright Python package
         run: python -m pip install playwright
 
-      - name: Select route and inspect date picker
-        id: probe
+      - name: Test direct live award search
+        id: search
         continue-on-error: true
-        run: xvfb-run -a python roame_interact_probe_v3.py
+        run: xvfb-run -a python roame_direct_test.py
 
       - name: Ensure results directory exists
         if: always()
-        run: mkdir -p results && printf '%s\n' "step_outcome=${{ steps.probe.outcome }}" > results/workflow_status.txt
+        run: mkdir -p results && printf '%s\n' "step_outcome=${{ steps.search.outcome }}" > results/workflow_status.txt
 
-      - name: Upload interaction probe
+      - name: Upload direct search evidence
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: roame-interact-v3
+          name: roame-direct-test
           path: results/
           if-no-files-found: warn
           retention-days: 3
