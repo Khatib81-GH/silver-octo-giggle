@@ -1,6 +1,5 @@
 import dataclasses
 import json
-import re
 import time
 from datetime import date, timedelta
 from pathlib import Path
@@ -15,16 +14,9 @@ while d <= END:
     DATES.append(d.isoformat())
     d += timedelta(days=1)
 
-SKYTEAM_NAMES = (
-    'delta', 'air france', 'klm', 'saudia', 'saudi arabian', 'middle east airlines',
-    'mea', 'virgin atlantic', 'korean air', 'aeromexico', 'china airlines',
-    'china eastern', 'garuda', 'kenya airways', 'vietnam airlines', 'sas',
-    'scandinavian airlines', 'aerolineas argentinas', 'tarom', 'air europa',
-)
-
 
 def jsonify(obj, depth=0):
-    if depth > 7:
+    if depth > 10:
         return repr(obj)
     if obj is None or isinstance(obj, (str, int, float, bool)):
         return obj
@@ -39,34 +31,38 @@ def jsonify(obj, depth=0):
     return repr(obj)
 
 
-def skyteam_likely(record):
-    text = json.dumps(record, ensure_ascii=False).lower()
-    return any(name in text for name in SKYTEAM_NAMES)
-
-
 cash = []
 try:
-    from fast_flights import FlightData, Passengers, get_flights
+    from fast_flights import FlightQuery, Passengers, create_query, get_flights
     for travel_date in DATES:
-        print(f'Google Flights via fast-flights: {travel_date}', flush=True)
+        print(f'Google Flights SkyTeam-only: {travel_date}', flush=True)
         try:
-            result = get_flights(
-                flight_data=[FlightData(date=travel_date, from_airport='JED', to_airport='DTW')],
+            query = create_query(
+                flights=[FlightQuery(
+                    date=travel_date,
+                    from_airport='JED',
+                    to_airport='DTW',
+                    airlines=['SKYTEAM'],
+                )],
                 trip='one-way',
                 seat='economy',
-                passengers=Passengers(adults=1, children=0, infants_in_seat=0, infants_on_lap=0),
-                fetch_mode='fallback',
+                passengers=Passengers(adults=1),
+                currency='USD',
+                hide_separate_and_self_transfer=True,
+                exclude_basic_economy=True,
             )
+            result = get_flights(query)
             raw = jsonify(result)
-            flights = raw.get('flights', []) if isinstance(raw, dict) else []
+            flights = raw if isinstance(raw, list) else raw.get('flights', []) if isinstance(raw, dict) else []
+            metadata = jsonify(getattr(result, 'metadata', None))
             cash.append({
                 'date': travel_date,
-                'current_price': raw.get('current_price') if isinstance(raw, dict) else None,
-                'all_flights': flights,
-                'skyteam_name_matches': [f for f in flights if skyteam_likely(f)],
-                'raw_result': raw,
+                'flights': flights,
+                'metadata': metadata,
             })
-            print(f'  flights={len(flights)} skyteam_name_matches={sum(skyteam_likely(f) for f in flights)}', flush=True)
+            print(f'  flights={len(flights)}', flush=True)
+            for f in flights[:5]:
+                print(' ', json.dumps(f, ensure_ascii=False)[:1000], flush=True)
         except Exception as exc:
             cash.append({'date': travel_date, 'error': f'{type(exc).__name__}: {exc}'})
             print(f'  ERROR {type(exc).__name__}: {exc}', flush=True)
@@ -80,8 +76,8 @@ print('CASH_RESULTS_BEGIN')
 print(json.dumps(cash, ensure_ascii=False))
 print('CASH_RESULTS_END')
 
-# Secondary third-party award source. This may be blocked by Cloudflare; preserve the
-# exact status/body so failure is distinguishable from an empty award search.
+# Secondary third-party award source. Preserve the exact status/body so failure is
+# distinguishable from an empty award search.
 params = {
     'min_seats': '1',
     'additional_days': 'true',
