@@ -1,0 +1,1562 @@
+{
+  "meta": null,
+  "ttl_ms": 0,
+  "cache_scope": "private",
+  "next_cursor": null,
+  "tools": [
+    {
+      "name": "search-flights",
+      "title": "Search Flights",
+      "description": "Search for award flights across 40+ airline loyalty programs. Returns availability, points pricing, cabin class, and routing options for the given origin, destination, and date. Each call searches exactly one origin airport, one destination airport and one date. If the user mentions several airports, routes or dates, ask which single route to search first instead of calling this tool several times in one reply.",
+      "input_schema": {
+        "additionalProperties": false,
+        "description": "Comprehensive schema for the search-flights tool.\n\nNew searches use origin, destination, and departure_date. Polling requests\nuse search_key and may omit the route fields.",
+        "properties": {
+          "origin": {
+            "default": "",
+            "description": "Origin airport code (e.g., 'LAX')",
+            "title": "Origin",
+            "type": "string"
+          },
+          "destination": {
+            "default": "",
+            "description": "Destination airport code (e.g., 'JFK')",
+            "title": "Destination",
+            "type": "string"
+          },
+          "departure_date": {
+            "default": "",
+            "description": "Departure date in YYYY-MM-DD format",
+            "title": "Departure Date",
+            "type": "string"
+          },
+          "passengers": {
+            "default": 1,
+            "description": "Number of passengers (1-9, default: 1)",
+            "title": "Passengers",
+            "type": "integer"
+          },
+          "cabin_class": {
+            "default": "economy",
+            "description": "Cabin class: economy, premium_economy, business, or first (default: economy)",
+            "title": "Cabin Class",
+            "type": "string"
+          },
+          "search_key": {
+            "default": "",
+            "description": "Optional search key for polling existing search results",
+            "title": "Search Key",
+            "type": "string"
+          },
+          "delta": {
+            "default": 0,
+            "description": "Additional days flexibility (\u00b1N days from departure, 0-180, default: 0)",
+            "title": "Delta",
+            "type": "integer"
+          },
+          "minimum_seats": {
+            "default": 1,
+            "description": "Minimum number of seats required (1-10, default: 1)",
+            "title": "Minimum Seats",
+            "type": "integer"
+          },
+          "only_direct": {
+            "default": false,
+            "description": "Show only direct flights with no stops (default: false)",
+            "title": "Only Direct",
+            "type": "boolean"
+          },
+          "max_fees": {
+            "default": 0,
+            "description": "Maximum fees/taxes in USD (0 means no limit, default: 0)",
+            "title": "Max Fees",
+            "type": "integer"
+          },
+          "filter_cabin": {
+            "default": "",
+            "description": "Filter by airline codes (comma/space separated, e.g., 'UA AA DL')",
+            "title": "Filter Cabin",
+            "type": "string"
+          },
+          "operating_carriers_exclude": {
+            "default": false,
+            "description": "Treat filter_cabin as exclusion list instead of inclusion (default: false)",
+            "title": "Operating Carriers Exclude",
+            "type": "boolean"
+          },
+          "programmes": {
+            "default": "",
+            "description": "Filter by loyalty program codes (comma separated) \u2014 applied by UI",
+            "title": "Programmes",
+            "type": "string"
+          },
+          "programme_exclude": {
+            "default": false,
+            "description": "Exclude selected programmes (default: false)",
+            "title": "Programme Exclude",
+            "type": "boolean"
+          },
+          "alliances": {
+            "default": "",
+            "description": "Filter by airline alliances (comma separated) \u2014 applied by UI",
+            "title": "Alliances",
+            "type": "string"
+          },
+          "alliance_exclude": {
+            "default": false,
+            "description": "Exclude selected alliances (default: false)",
+            "title": "Alliance Exclude",
+            "type": "boolean"
+          },
+          "transfer_partners": {
+            "default": "",
+            "description": "Filter by transfer partners (comma separated) \u2014 applied by UI",
+            "title": "Transfer Partners",
+            "type": "string"
+          },
+          "transfer_partner_exclude": {
+            "default": false,
+            "description": "Exclude selected transfer partners (default: false)",
+            "title": "Transfer Partner Exclude",
+            "type": "boolean"
+          },
+          "max_points": {
+            "default": 0,
+            "description": "Maximum points/miles required (0 = no limit) \u2014 applied by UI",
+            "title": "Max Points",
+            "type": "integer"
+          },
+          "days_of_week": {
+            "default": "",
+            "description": "Filter by days of week (comma separated) \u2014 applied by UI",
+            "title": "Days Of Week",
+            "type": "string"
+          },
+          "departure_time_start": {
+            "default": 0,
+            "description": "Departure time start in minutes from midnight (0-1440) \u2014 applied by UI",
+            "title": "Departure Time Start",
+            "type": "integer"
+          },
+          "departure_time_end": {
+            "default": 1440,
+            "description": "Departure time end in minutes from midnight (0-1440) \u2014 applied by UI",
+            "title": "Departure Time End",
+            "type": "integer"
+          },
+          "arrival_time_start": {
+            "default": 0,
+            "description": "Arrival time start in minutes from midnight (0-1440) \u2014 applied by UI",
+            "title": "Arrival Time Start",
+            "type": "integer"
+          },
+          "arrival_time_end": {
+            "default": 1440,
+            "description": "Arrival time end in minutes from midnight (0-1440) \u2014 applied by UI",
+            "title": "Arrival Time End",
+            "type": "integer"
+          },
+          "duration_max": {
+            "default": 0,
+            "description": "Maximum flight duration in minutes (0 = no limit) \u2014 applied by UI",
+            "title": "Duration Max",
+            "type": "integer"
+          },
+          "aircraft": {
+            "default": "",
+            "description": "Filter by aircraft types (comma separated) \u2014 applied by UI",
+            "title": "Aircraft",
+            "type": "string"
+          },
+          "connections": {
+            "default": "",
+            "description": "Filter by connection airports (comma separated) \u2014 applied by UI",
+            "title": "Connections",
+            "type": "string"
+          },
+          "connections_exclude": {
+            "default": false,
+            "description": "Exclude selected connections (default: false)",
+            "title": "Connections Exclude",
+            "type": "boolean"
+          }
+        },
+        "title": "SearchFlightsInput",
+        "type": "object"
+      },
+      "execution": null,
+      "output_schema": {
+        "$defs": {
+          "Flight": {
+            "description": "Flight result from FlightPoints API.",
+            "properties": {
+              "id": {
+                "title": "Id",
+                "type": "string"
+              },
+              "program": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Program"
+              },
+              "airline": {
+                "title": "Airline",
+                "type": "string"
+              },
+              "alliance": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Alliance"
+              },
+              "program_name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Program Name"
+              },
+              "last_seen": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Last Seen"
+              },
+              "economy_miles": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Economy Miles"
+              },
+              "economy_tax": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Economy Tax"
+              },
+              "economy_seats": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Economy Seats"
+              },
+              "economy_stops": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Economy Stops"
+              },
+              "economy_airlines_codes": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Economy Airlines Codes"
+              },
+              "premium_economy_miles": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Premium Economy Miles"
+              },
+              "premium_economy_tax": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Premium Economy Tax"
+              },
+              "premium_economy_seats": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Premium Economy Seats"
+              },
+              "premium_economy_stops": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Premium Economy Stops"
+              },
+              "premium_economy_airlines_codes": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Premium Economy Airlines Codes"
+              },
+              "business_miles": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Business Miles"
+              },
+              "business_tax": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Business Tax"
+              },
+              "business_seats": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Business Seats"
+              },
+              "business_stops": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Business Stops"
+              },
+              "business_airlines_codes": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Business Airlines Codes"
+              },
+              "first_miles": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "First Miles"
+              },
+              "first_tax": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "First Tax"
+              },
+              "first_seats": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "First Seats"
+              },
+              "first_stops": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "First Stops"
+              },
+              "first_airlines_codes": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "First Airlines Codes"
+              },
+              "origin": {
+                "title": "Origin",
+                "type": "string"
+              },
+              "destination": {
+                "title": "Destination",
+                "type": "string"
+              },
+              "departure_date": {
+                "title": "Departure Date",
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "airline",
+              "origin",
+              "destination",
+              "departure_date"
+            ],
+            "title": "Flight",
+            "type": "object"
+          },
+          "SearchParams": {
+            "description": "Comprehensive flight search parameters.\n\nDivided into three categories:\n1. Mandatory fields: origin, destination, date\n2. API filters: passed to FlightPoints backend endpoints\n3. Frontend-only filters: applied client-side (documented for future use)",
+            "properties": {
+              "origin": {
+                "description": "Origin airport code (e.g., LAX)",
+                "title": "Origin",
+                "type": "string"
+              },
+              "destination": {
+                "description": "Destination airport code (e.g., JFK)",
+                "title": "Destination",
+                "type": "string"
+              },
+              "date": {
+                "description": "Departure date (YYYY-MM-DD)",
+                "title": "Date",
+                "type": "string"
+              },
+              "passengers": {
+                "default": 1,
+                "description": "Number of passengers",
+                "maximum": 9,
+                "minimum": 1,
+                "title": "Passengers",
+                "type": "integer"
+              },
+              "cabin_class": {
+                "default": "economy",
+                "description": "Cabin class: economy, premium_economy, business, or first",
+                "title": "Cabin Class",
+                "type": "string"
+              },
+              "live": {
+                "default": false,
+                "description": "True for live/authenticated search, False for cached search",
+                "title": "Live",
+                "type": "boolean"
+              },
+              "delta": {
+                "default": 0,
+                "description": "Additional days flexibility (\u00b1N days from departure date)",
+                "maximum": 180,
+                "minimum": 0,
+                "title": "Delta",
+                "type": "integer"
+              },
+              "additional_days": {
+                "default": false,
+                "description": "Enable additional days flexibility",
+                "title": "Additional Days",
+                "type": "boolean"
+              },
+              "additional_days_num": {
+                "anyOf": [
+                  {
+                    "maximum": 180,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Number of additional days (used when additional_days is True)",
+                "title": "Additional Days Num"
+              },
+              "show_individual": {
+                "default": false,
+                "description": "Return individual flight details instead of aggregated results",
+                "title": "Show Individual",
+                "type": "boolean"
+              },
+              "minimum_seats": {
+                "anyOf": [
+                  {
+                    "maximum": 10,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Minimum number of available seats required",
+                "title": "Minimum Seats"
+              },
+              "only_direct": {
+                "default": false,
+                "description": "Show only direct flights (no stops)",
+                "title": "Only Direct",
+                "type": "boolean"
+              },
+              "max_fees": {
+                "anyOf": [
+                  {
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Maximum fees/taxes in USD",
+                "title": "Max Fees"
+              },
+              "filter_cabin": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Filter by specific airline codes (comma/space separated)",
+                "title": "Filter Cabin"
+              },
+              "operating_carriers_exclude": {
+                "default": false,
+                "description": "Treat filter_cabin as exclusion list instead of inclusion",
+                "title": "Operating Carriers Exclude",
+                "type": "boolean"
+              },
+              "programmes": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Filter by loyalty program codes (frontend-only)",
+                "title": "Programmes"
+              },
+              "programme_exclude": {
+                "default": false,
+                "description": "Exclude selected programmes instead of including (frontend-only)",
+                "title": "Programme Exclude",
+                "type": "boolean"
+              },
+              "alliances": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Filter by airline alliances: oneworld, skyteam, star (frontend-only)",
+                "title": "Alliances"
+              },
+              "alliance_exclude": {
+                "default": false,
+                "description": "Exclude selected alliances (frontend-only)",
+                "title": "Alliance Exclude",
+                "type": "boolean"
+              },
+              "transfer_partners": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Filter by transfer partners: amex, chase, bilt, etc. (frontend-only)",
+                "title": "Transfer Partners"
+              },
+              "transfer_partner_exclude": {
+                "default": false,
+                "description": "Exclude selected transfer partners (frontend-only)",
+                "title": "Transfer Partner Exclude",
+                "type": "boolean"
+              },
+              "max_points": {
+                "anyOf": [
+                  {
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Maximum points/miles required (frontend-only)",
+                "title": "Max Points"
+              },
+              "days_of_week": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Filter by days of week: monday, tuesday, etc. (frontend-only)",
+                "title": "Days Of Week"
+              },
+              "time_range": {
+                "anyOf": [
+                  {
+                    "maxItems": 2,
+                    "minItems": 2,
+                    "prefixItems": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ],
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Departure time range in minutes from midnight (frontend-only)",
+                "title": "Time Range"
+              },
+              "arrival_time_range": {
+                "anyOf": [
+                  {
+                    "maxItems": 2,
+                    "minItems": 2,
+                    "prefixItems": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "integer"
+                      }
+                    ],
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Arrival time range in minutes from midnight (frontend-only)",
+                "title": "Arrival Time Range"
+              },
+              "duration_max": {
+                "anyOf": [
+                  {
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Maximum flight duration in minutes (frontend-only)",
+                "title": "Duration Max"
+              },
+              "aircraft": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Filter by aircraft types (frontend-only)",
+                "title": "Aircraft"
+              },
+              "connections": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "description": "Filter by connection airports (frontend-only)",
+                "title": "Connections"
+              },
+              "connections_exclude": {
+                "default": false,
+                "description": "Exclude selected connections (frontend-only)",
+                "title": "Connections Exclude",
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "origin",
+              "destination",
+              "date"
+            ],
+            "title": "SearchParams",
+            "type": "object"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Structured result returned by the search-flights tool.",
+        "properties": {
+          "flights": {
+            "description": "Award flight results returned by FlightPoints",
+            "items": {
+              "$ref": "#/$defs/Flight"
+            },
+            "title": "Flights",
+            "type": "array"
+          },
+          "search_params": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/SearchParams"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Search parameters for a new search; omitted when polling an existing search"
+          },
+          "total_results": {
+            "description": "Number of flight results returned in this response",
+            "title": "Total Results",
+            "type": "integer"
+          },
+          "is_complete": {
+            "description": "Whether FlightPoints has completed the search",
+            "title": "Is Complete",
+            "type": "boolean"
+          },
+          "status": {
+            "description": "Current FlightPoints search status",
+            "title": "Status",
+            "type": "string"
+          },
+          "search_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Opaque key used by the widget to poll for additional results",
+            "title": "Search Key"
+          },
+          "total_flights": {
+            "description": "Total number of flights reported by FlightPoints",
+            "title": "Total Flights",
+            "type": "integer"
+          },
+          "is_live": {
+            "default": false,
+            "description": "Whether this response used live rather than cached availability",
+            "title": "Is Live",
+            "type": "boolean"
+          },
+          "is_authenticated": {
+            "default": false,
+            "description": "Whether a valid linked FlightPoints account was present",
+            "title": "Is Authenticated",
+            "type": "boolean"
+          },
+          "is_premium": {
+            "default": false,
+            "description": "Whether the linked account has FlightPoints Pro access",
+            "title": "Is Premium",
+            "type": "boolean"
+          },
+          "search_mode": {
+            "default": "cached",
+            "description": "Entitlement-selected search mode",
+            "enum": [
+              "cached",
+              "live"
+            ],
+            "title": "Search Mode",
+            "type": "string"
+          },
+          "mcp_base_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Public origin of this MCP server; the widget builds first-party booking handoff links from it",
+            "title": "Mcp Base Url"
+          }
+        },
+        "required": [
+          "flights",
+          "total_results",
+          "is_complete",
+          "status",
+          "total_flights"
+        ],
+        "title": "SearchFlightsOutput",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": null,
+        "open_world_hint": false
+      },
+      "meta": {
+        "securitySchemes": [
+          {
+            "type": "noauth"
+          },
+          {
+            "type": "oauth2",
+            "scopes": [
+              "read"
+            ]
+          }
+        ],
+        "ui": {
+          "resourceUri": "ui://widget/flight-search-f7fd0a5bfc0d.html",
+          "domain": "https://mcp.flightpoints.com",
+          "csp": {
+            "connectDomains": [],
+            "resourceDomains": [
+              "https://persistent.oaistatic.com"
+            ]
+          }
+        },
+        "openai/widgetDomain": "https://mcp.flightpoints.com",
+        "openai/widgetCSP": {
+          "connect_domains": [],
+          "resource_domains": [
+            "https://persistent.oaistatic.com"
+          ],
+          "redirect_domains": [
+            "https://mcp.flightpoints.com"
+          ]
+        },
+        "openai/outputTemplate": "ui://widget/flight-search-f7fd0a5bfc0d.html",
+        "openai/toolInvocation/invoking": "Searching for flights...",
+        "openai/toolInvocation/invoked": "Showing flight results",
+        "openai/widgetAccessible": true,
+        "openai/resultCanProduceWidget": true,
+        "annotations": {
+          "destructiveHint": false,
+          "openWorldHint": false,
+          "readOnlyHint": false
+        }
+      }
+    },
+    {
+      "name": "get-flight-details",
+      "title": "Get Flight Details",
+      "description": "Retrieve detailed flight segment information \u2014 including departure/arrival times, operating airlines, aircraft types, and award pricing \u2014 for a specific route and loyalty program",
+      "input_schema": {
+        "additionalProperties": false,
+        "description": "Schema for the get-flight-details tool.",
+        "properties": {
+          "departure_date": {
+            "description": "Departure date in YYYY-MM-DD format",
+            "title": "Departure Date",
+            "type": "string"
+          },
+          "program": {
+            "description": "Program/airline code (e.g., 'G3', 'AA')",
+            "title": "Program",
+            "type": "string"
+          },
+          "origin": {
+            "description": "Origin airport code (e.g., 'ABE')",
+            "title": "Origin",
+            "type": "string"
+          },
+          "destination": {
+            "description": "Destination airport code (e.g., 'CLT')",
+            "title": "Destination",
+            "type": "string"
+          },
+          "direct_flight_only": {
+            "default": false,
+            "description": "Whether to show only direct flights",
+            "title": "Direct Flight Only",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "departure_date",
+          "program",
+          "origin",
+          "destination"
+        ],
+        "title": "GetFlightDetailsInput",
+        "type": "object"
+      },
+      "execution": null,
+      "output_schema": {
+        "$defs": {
+          "FlightDetail": {
+            "description": "Detailed flight information with segments.",
+            "properties": {
+              "program": {
+                "title": "Program",
+                "type": "string"
+              },
+              "origin": {
+                "title": "Origin",
+                "type": "string"
+              },
+              "destination": {
+                "title": "Destination",
+                "type": "string"
+              },
+              "departure_date": {
+                "title": "Departure Date",
+                "type": "string"
+              },
+              "last_seen": {
+                "title": "Last Seen",
+                "type": "string"
+              },
+              "departure_time": {
+                "title": "Departure Time",
+                "type": "string"
+              },
+              "arrival_date": {
+                "title": "Arrival Date",
+                "type": "string"
+              },
+              "arrival_time": {
+                "title": "Arrival Time",
+                "type": "string"
+              },
+              "duration_minutes": {
+                "title": "Duration Minutes",
+                "type": "integer"
+              },
+              "economy_miles": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Economy Miles"
+              },
+              "economy_cash": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Economy Cash"
+              },
+              "economy_seats_available": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Economy Seats Available"
+              },
+              "economy_airline_code": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Economy Airline Code"
+              },
+              "premium_economy_miles": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Premium Economy Miles"
+              },
+              "premium_economy_cash": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Premium Economy Cash"
+              },
+              "premium_economy_seats_available": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Premium Economy Seats Available"
+              },
+              "premium_economy_airline_code": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Premium Economy Airline Code"
+              },
+              "business_miles": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Business Miles"
+              },
+              "business_cash": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Business Cash"
+              },
+              "business_seats_available": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Business Seats Available"
+              },
+              "business_airline_code": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Business Airline Code"
+              },
+              "first_miles": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "First Miles"
+              },
+              "first_cash": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "First Cash"
+              },
+              "first_seats_available": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "First Seats Available"
+              },
+              "first_airline_code": {
+                "anyOf": [
+                  {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "First Airline Code"
+              },
+              "stops": {
+                "title": "Stops",
+                "type": "integer"
+              },
+              "booking_url": {
+                "title": "Booking Url",
+                "type": "string"
+              },
+              "segments": {
+                "items": {
+                  "$ref": "#/$defs/FlightSegment"
+                },
+                "title": "Segments",
+                "type": "array"
+              },
+              "related_offers": {
+                "anyOf": [
+                  {
+                    "items": {},
+                    "type": "array"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Related Offers"
+              }
+            },
+            "required": [
+              "program",
+              "origin",
+              "destination",
+              "departure_date",
+              "last_seen",
+              "departure_time",
+              "arrival_date",
+              "arrival_time",
+              "duration_minutes",
+              "stops",
+              "booking_url",
+              "segments"
+            ],
+            "title": "FlightDetail",
+            "type": "object"
+          },
+          "FlightSegment": {
+            "description": "Individual flight segment details.",
+            "properties": {
+              "segment_number": {
+                "title": "Segment Number",
+                "type": "integer"
+              },
+              "origin": {
+                "title": "Origin",
+                "type": "string"
+              },
+              "destination": {
+                "title": "Destination",
+                "type": "string"
+              },
+              "departure_time": {
+                "title": "Departure Time",
+                "type": "string"
+              },
+              "arrival_time": {
+                "title": "Arrival Time",
+                "type": "string"
+              },
+              "flight_number": {
+                "title": "Flight Number",
+                "type": "string"
+              },
+              "airline_code": {
+                "title": "Airline Code",
+                "type": "string"
+              },
+              "aircraft": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Aircraft"
+              },
+              "distance": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Distance"
+              },
+              "layover_time": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Layover Time"
+              },
+              "travel_minutes": {
+                "title": "Travel Minutes",
+                "type": "integer"
+              },
+              "airline_name": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "default": null,
+                "title": "Airline Name"
+              }
+            },
+            "required": [
+              "segment_number",
+              "origin",
+              "destination",
+              "departure_time",
+              "arrival_time",
+              "flight_number",
+              "airline_code",
+              "travel_minutes"
+            ],
+            "title": "FlightSegment",
+            "type": "object"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Structured result returned by the get-flight-details tool.",
+        "properties": {
+          "flights": {
+            "description": "Detailed flight options for the selected route",
+            "items": {
+              "$ref": "#/$defs/FlightDetail"
+            },
+            "title": "Flights",
+            "type": "array"
+          },
+          "total_results": {
+            "description": "Number of detailed flight options returned",
+            "title": "Total Results",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "flights",
+          "total_results"
+        ],
+        "title": "GetFlightDetailsOutput",
+        "type": "object"
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "read_only_hint": true,
+        "destructive_hint": false,
+        "idempotent_hint": null,
+        "open_world_hint": false
+      },
+      "meta": {
+        "securitySchemes": [
+          {
+            "type": "noauth"
+          },
+          {
+            "type": "oauth2",
+            "scopes": [
+              "read"
+            ]
+          }
+        ],
+        "annotations": {
+          "readOnlyHint": true,
+          "openWorldHint": false,
+          "destructiveHint": false
+        }
+      }
+    },
+    {
+      "name": "connect-flightpoints-account",
+      "title": "Connect FlightPoints Account",
+      "description": "Start secure FlightPoints account linking from the FlightPoints widget.",
+      "input_schema": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": false
+      },
+      "execution": null,
+      "output_schema": {
+        "type": "object",
+        "properties": {
+          "connected": {
+            "type": "boolean",
+            "description": "Whether a FlightPoints account is connected."
+          },
+          "message": {
+            "type": "string",
+            "description": "Short status message for the FlightPoints widget."
+          }
+        },
+        "required": [
+          "connected",
+          "message"
+        ],
+        "additionalProperties": false
+      },
+      "icons": null,
+      "annotations": {
+        "title": null,
+        "read_only_hint": false,
+        "destructive_hint": false,
+        "idempotent_hint": null,
+        "open_world_hint": false
+      },
+      "meta": {
+        "securitySchemes": [
+          {
+            "type": "oauth2",
+            "scopes": [
+              "read"
+            ]
+          }
+        ],
+        "ui": {
+          "visibility": [
+            "app"
+          ]
+        },
+        "openai/widgetAccessible": true,
+        "openai/toolInvocation/invoking": "Connecting FlightPoints\u2026",
+        "openai/toolInvocation/invoked": "FlightPoints connected",
+        "annotations": {
+          "readOnlyHint": false,
+          "openWorldHint": false,
+          "destructiveHint": false
+        }
+      }
+    }
+  ],
+  "result_type": "complete"
+}

@@ -1,0 +1,14 @@
+{
+  "meta": null,
+  "content": [
+    {
+      "type": "text",
+      "text": "Invalid search input:\n- programme_exclude: Input should be a valid boolean, unable to interpret input",
+      "annotations": null,
+      "meta": null
+    }
+  ],
+  "structured_content": null,
+  "is_error": true,
+  "result_type": "complete"
+}

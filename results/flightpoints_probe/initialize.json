@@ -1,0 +1,30 @@
+{
+  "meta": null,
+  "protocol_version": "2025-11-25",
+  "capabilities": {
+    "experimental": {},
+    "logging": null,
+    "prompts": {
+      "list_changed": false
+    },
+    "resources": {
+      "subscribe": false,
+      "list_changed": false
+    },
+    "tools": {
+      "list_changed": false
+    },
+    "completions": null,
+    "extensions": null,
+    "tasks": null
+  },
+  "server_info": {
+    "name": "flightpoints-assistant",
+    "title": null,
+    "version": "1.30.0",
+    "description": null,
+    "website_url": "https://mcp.flightpoints.com",
+    "icons": null
+  },
+  "instructions": null
+}
