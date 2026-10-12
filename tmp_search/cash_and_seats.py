@@ -14,6 +14,14 @@ while d <= END:
     DATES.append(d.isoformat())
     d += timedelta(days=1)
 
+SKYTEAM_NAMES = {
+    'aerolineas argentinas', 'aeromexico', 'air europa', 'air france',
+    'china airlines', 'china eastern', 'delta', 'garuda indonesia',
+    'kenya airways', 'klm', 'korean air', 'middle east airlines', 'mea',
+    'saudia', 'sas', 'scandinavian airlines', 'tarom', 'vietnam airlines',
+    'virgin atlantic',
+}
+
 
 def jsonify(obj, depth=0):
     if depth > 10:
@@ -31,18 +39,22 @@ def jsonify(obj, depth=0):
     return repr(obj)
 
 
+def all_skyteam(flight):
+    airlines = [str(x).strip().lower() for x in (flight.get('airlines') or [])]
+    return bool(airlines) and all(a in SKYTEAM_NAMES for a in airlines)
+
+
 cash = []
 try:
     from fast_flights import FlightQuery, Passengers, create_query, get_flights
     for travel_date in DATES:
-        print(f'Google Flights SkyTeam-only: {travel_date}', flush=True)
+        print(f'Google Flights all-carrier query, SkyTeam filter: {travel_date}', flush=True)
         try:
             query = create_query(
                 flights=[FlightQuery(
                     date=travel_date,
                     from_airport='JED',
                     to_airport='DTW',
-                    airlines=['SKYTEAM'],
                 )],
                 trip='one-way',
                 seat='economy',
@@ -54,15 +66,17 @@ try:
             result = get_flights(query)
             raw = jsonify(result)
             flights = raw if isinstance(raw, list) else raw.get('flights', []) if isinstance(raw, dict) else []
+            skyteam = [f for f in flights if all_skyteam(f)]
             metadata = jsonify(getattr(result, 'metadata', None))
             cash.append({
                 'date': travel_date,
-                'flights': flights,
+                'skyteam_flights': skyteam,
+                'all_flight_count': len(flights),
                 'metadata': metadata,
             })
-            print(f'  flights={len(flights)}', flush=True)
-            for f in flights[:5]:
-                print(' ', json.dumps(f, ensure_ascii=False)[:1000], flush=True)
+            print(f'  all={len(flights)} skyteam={len(skyteam)}', flush=True)
+            for f in skyteam[:8]:
+                print(' ', json.dumps(f, ensure_ascii=False)[:1600], flush=True)
         except Exception as exc:
             cash.append({'date': travel_date, 'error': f'{type(exc).__name__}: {exc}'})
             print(f'  ERROR {type(exc).__name__}: {exc}', flush=True)
