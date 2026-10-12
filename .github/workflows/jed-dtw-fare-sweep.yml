@@ -5,16 +5,16 @@ on:
     branches:
       - tmp/jed-dtw-fares-20261012
     paths:
-      - seats_probe.py
+      - fb_probe.py
       - .github/workflows/jed-dtw-fare-sweep.yml
 
 permissions:
   contents: read
 
 jobs:
-  seats-probe:
+  flying-blue-probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
     steps:
       - name: Check out branch
         uses: actions/checkout@v4
@@ -24,23 +24,23 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install requests
-        run: python -m pip install requests
+      - name: Install Playwright Python package
+        run: python -m pip install playwright
 
-      - name: Probe Seats.aero sources independently
+      - name: Probe Air France Flying Blue award flow and retain network evidence
         id: probe
         continue-on-error: true
-        run: python seats_probe.py
+        run: xvfb-run -a python fb_probe.py
 
       - name: Ensure results directory exists
         if: always()
         run: mkdir -p results && printf '%s\n' "step_outcome=${{ steps.probe.outcome }}" > results/workflow_status.txt
 
-      - name: Upload probe results
+      - name: Upload Flying Blue probe
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: seats-aero-probe
+          name: flying-blue-probe
           path: results/
           if-no-files-found: warn
           retention-days: 3
