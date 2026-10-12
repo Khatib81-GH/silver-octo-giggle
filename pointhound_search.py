@@ -43,8 +43,7 @@ async def main():
             origin = page.get_by_placeholder('Origin airport or city')
             await origin.fill('JED')
             await page.wait_for_timeout(1200)
-            origin_options = await page.locator('[role=option]').all_inner_texts()
-            result['origin_options'] = origin_options
+            result['origin_options'] = await page.locator('[role=option]').all_inner_texts()
             option = page.locator('[role=option]').filter(has_text='JED').first
             if await option.count() == 0:
                 option = page.locator('[role=option]').filter(has_text='Jeddah').first
@@ -54,8 +53,7 @@ async def main():
             dest = page.get_by_placeholder('Destination airport')
             await dest.fill('DTW')
             await page.wait_for_timeout(1200)
-            dest_options = await page.locator('[role=option]').all_inner_texts()
-            result['destination_options'] = dest_options
+            result['destination_options'] = await page.locator('[role=option]').all_inner_texts()
             option = page.locator('[role=option]').filter(has_text='DTW').first
             if await option.count() == 0:
                 option = page.locator('[role=option]').filter(has_text='Detroit').first
@@ -68,7 +66,6 @@ async def main():
             result['calendar_text_initial'] = (await page.locator('body').inner_text())[:30000]
             result['calendar_buttons_initial'] = await page.locator('button:visible').evaluate_all("els => els.map((e,i)=>({i,text:(e.innerText||'').trim(),aria:e.getAttribute('aria-label'),title:e.title,disabled:e.disabled,outer:e.outerHTML.slice(0,800)})).filter(x=>x.text||x.aria||x.title)")
 
-            # Move from October to December 2026 when a next-month control is present.
             for _ in range(2):
                 nxt = page.locator('button[aria-label*="next" i], button[title*="next" i]').first
                 if await nxt.count() and await nxt.is_visible():
@@ -77,7 +74,6 @@ async def main():
                 else:
                     break
 
-            # Prefer an explicit accessible label for Dec 25, then fall back to a visible day button.
             day = page.locator('button[aria-label*="December 25" i]').first
             if await day.count() == 0:
                 day = page.locator('button:visible').filter(has_text='25').first
@@ -86,17 +82,19 @@ async def main():
             result['date_value'] = await date_input.input_value()
             result['steps'].append('date selected')
 
+            # The calendar remains open after selecting a single day and intercepts clicks.
+            await page.keyboard.press('Escape')
+            await page.wait_for_timeout(300)
             fetch = page.get_by_role('button', name='Fetch deals').first
             result['fetch_disabled_before'] = await fetch.is_disabled()
-            await fetch.click()
+            await fetch.evaluate("el => el.click()")
             result['steps'].append('submitted')
 
-            # Let the search stream in. Record the final URL and visible result text.
             try:
                 await page.wait_for_load_state('networkidle', timeout=90000)
             except Exception:
                 pass
-            await page.wait_for_timeout(15000)
+            await page.wait_for_timeout(20000)
             result['url'] = page.url
             result['title'] = await page.title()
             result['body'] = (await page.locator('body').inner_text())[:120000]
