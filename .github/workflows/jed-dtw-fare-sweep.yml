@@ -5,16 +5,16 @@ on:
     branches:
       - tmp/jed-dtw-fares-20261012
     paths:
-      - award_afd.py
+      - mcp_probe.py
       - .github/workflows/jed-dtw-fare-sweep.yml
 
 permissions:
   contents: read
 
 jobs:
-  award-sweep:
+  mcp-probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
     steps:
       - name: Check out branch
         uses: actions/checkout@v4
@@ -24,23 +24,23 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install released MCP client
-        run: python -m pip install --upgrade pip 'mcp==2.3.0'
+      - name: Install requests
+        run: python -m pip install requests
 
-      - name: Query Flying Blue and SkyMiles independently in two date batches
-        id: sweep
+      - name: Probe MCP endpoint and retain each response
+        id: probe
         continue-on-error: true
-        run: python award_afd.py
+        run: python mcp_probe.py
 
       - name: Ensure results directory exists
         if: always()
-        run: mkdir -p results && printf '%s\n' "step_outcome=${{ steps.sweep.outcome }}" > results/workflow_status.txt
+        run: mkdir -p results && printf '%s\n' "step_outcome=${{ steps.probe.outcome }}" > results/workflow_status.txt
 
-      - name: Upload award results
+      - name: Upload probe results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: jed-dtw-awards-2026-12-25-to-2027-01-05
+          name: award-mcp-probe
           path: results/
           if-no-files-found: warn
           retention-days: 3
