@@ -1,4 +1,4 @@
-name: Temporary JED-DTW fare sweep
+name: Temporary JED-DTW cash and award sweep
 
 on:
   push:
@@ -11,174 +11,148 @@ permissions:
 jobs:
   search:
     runs-on: ubuntu-latest
-    timeout-minutes: 35
+    timeout-minutes: 40
     steps:
-      - name: Install live cash-search dependency
+      - name: Prepare tools
         shell: bash
         run: |
+          set -euo pipefail
+          git clone --depth 1 https://github.com/farzanariel/pointsyeah-api.git /tmp/pointsyeah
+          cd /tmp/pointsyeah
+          npm install --silent
           python3 -m pip install --upgrade pip >/dev/null
-          python3 -m pip install fast-flights >/dev/null
+          python3 -m pip install 'git+https://github.com/kftang/fast-flights.git' >/dev/null
+          mkdir -p "$GITHUB_WORKSPACE/results"
 
-      - name: Search live cash fares and award space
+      - name: Search PointsYeah awards for entire date range
         shell: bash
         run: |
+          set -euo pipefail
+          cat >/tmp/pointsyeah/run-jed-dtw.ts <<'TS'
+          import { search } from "./src/pointsyeah.ts";
+          import { writeFileSync } from "node:fs";
+
+          const startedAt = new Date().toISOString();
+          try {
+            const results = await search(
+              {
+                departure: "JED",
+                arrival: "DTW",
+                departDate: "2026-12-25",
+                departDateTo: "2027-01-05",
+                cabins: ["Economy"],
+                adults: 1,
+                children: 0,
+              },
+              {
+                timeoutMs: 240_000,
+                pollIntervalMs: 100,
+              },
+            );
+
+            const wanted = results.filter((r) => {
+              const label = `${r.program ?? ""} ${r.code ?? ""}`.toLowerCase();
+              return /flying\s*blue|air\s*france|klm|delta|skymiles/.test(label);
+            });
+            const output = {
+              source: "PointsYeah live award search",
+              searched_at_utc: startedAt,
+              completed_at_utc: new Date().toISOString(),
+              query: {
+                origin: "JED",
+                destination: "DTW",
+                start_date: "2026-12-25",
+                end_date: "2027-01-05",
+                cabin: "Economy",
+              },
+              programs_seen: [...new Set(results.map((r) => `${r.program} [${r.code}]`))].sort(),
+              all_program_result_count: results.length,
+              wanted,
+            };
+            writeFileSync(`${process.env.GITHUB_WORKSPACE}/results/pointsyeah.json`, JSON.stringify(output, null, 2));
+            console.log(`POINTSYEAH_OK programs=${output.programs_seen.length} wanted_groups=${wanted.length}`);
+            console.log(`PROGRAMS_SEEN ${JSON.stringify(output.programs_seen)}`);
+          } catch (error) {
+            const output = {
+              source: "PointsYeah live award search",
+              searched_at_utc: startedAt,
+              completed_at_utc: new Date().toISOString(),
+              error: error instanceof Error ? `${error.name}: ${error.message}` : String(error),
+            };
+            writeFileSync(`${process.env.GITHUB_WORKSPACE}/results/pointsyeah.json`, JSON.stringify(output, null, 2));
+            console.log(`POINTSYEAH_ERROR ${output.error}`);
+          }
+          TS
+          cd /tmp/pointsyeah
+          npx tsx run-jed-dtw.ts
+
+      - name: Search Google Flights cash fares date by date
+        shell: bash
+        run: |
+          set -euo pipefail
           python3 - <<'PY'
           import dataclasses
           import datetime as dt
           import json
           import re
           import time
-          import urllib.error
-          import urllib.parse
-          import urllib.request
+          from pathlib import Path
 
-          START = dt.date(2026, 12, 25)
-          END = dt.date(2027, 1, 5)
-          DATES = []
-          d = START
-          while d <= END:
-              DATES.append(d.isoformat())
-              d += dt.timedelta(days=1)
-
-          def request_json(url, *, method="GET", payload=None, headers=None, timeout=150):
-              body = None if payload is None else json.dumps(payload).encode("utf-8")
-              base_headers = {
-                  "Accept": "application/json",
-                  "User-Agent": "Mozilla/5.0 flight-research",
-              }
-              if payload is not None:
-                  base_headers["Content-Type"] = "application/json"
-              base_headers.update(headers or {})
-              req = urllib.request.Request(url, data=body, headers=base_headers, method=method)
-              try:
-                  with urllib.request.urlopen(req, timeout=timeout) as r:
-                      text = r.read().decode("utf-8", "replace")
-                      return r.status, json.loads(text) if text else {}
-              except urllib.error.HTTPError as e:
-                  text = e.read().decode("utf-8", "replace")
-                  try:
-                      parsed = json.loads(text) if text else {}
-                  except Exception:
-                      parsed = {"raw": text[:2000]}
-                  return e.code, parsed
-              except Exception as e:
-                  return 0, {"error": f"{type(e).__name__}: {e}"}
-
-          # ---- Award searches: Award Travel Finder REST API ----
-          reg_status, reg = request_json(
-              "https://awardtravelfinder.com/api/v1/agent/register",
-              method="POST",
-              payload={
-                  "agent_name": "ChatGPT-Mohamad-JED-DTW-20261012",
-                  "registration_key": "chatgpt-mohamad-jed-dtw-20261012-v2"
-              },
-          )
-          api_key = reg.get("api_key") if isinstance(reg, dict) else None
-          award_output = {
-              "registration_status": reg_status,
-              "usage": reg.get("usage") if isinstance(reg, dict) else None,
-              "dates": {},
-          }
-          if not api_key:
-              award_output["fatal_error"] = reg
-          else:
-              api_headers = {"X-API-Key": api_key}
-              base = "https://awardtravelfinder.com/api/v1/chatgpt"
-              skyteam_slugs = {
-                  "delta", "air-france", "air_france", "klm", "saudia", "saudi-arabian-airlines",
-                  "virgin-atlantic", "virgin_atlantic", "middle-east-airlines", "mea",
-                  "aeromexico", "aerolineas-argentinas", "aerolineas_argentinas",
-                  "china-airlines", "china_airlines", "china-eastern", "china_eastern",
-                  "garuda-indonesia", "garuda_indonesia", "kenya-airways", "kenya_airways",
-                  "korean-air", "korean_air", "sas", "scandinavian-airlines",
-                  "tarom", "vietnam-airlines", "vietnam_airlines", "xiamen-air", "xiamen_air"
-              }
-              calls_used = 0
-              for travel_date in DATES:
-                  params = urllib.parse.urlencode({
-                      "departure": "JED",
-                      "destination": "DTW",
-                      "date": travel_date,
-                  })
-                  status, payload = request_json(f"{base}/search_all?{params}", headers=api_headers, timeout=180)
-                  calls_used += 1
-                  date_record = {
-                      "search_all_status": status,
-                      "search_all": payload,
-                      "polled": {},
-                  }
-
-                  data = payload.get("data", {}) if isinstance(payload, dict) else {}
-                  pending = data.get("pending_searches", {}) if isinstance(data, dict) else {}
-                  if isinstance(pending, dict):
-                      for airline, info in pending.items():
-                          slug = str(airline).strip().lower()
-                          slug_normalized = slug.replace(" ", "-")
-                          if slug not in skyteam_slugs and slug_normalized not in skyteam_slugs:
-                              continue
-                          if calls_used >= 48:
-                              date_record["polled"][airline] = {"status": "skipped_api_call_cap"}
-                              continue
-                          cache_key = info.get("cache_key") if isinstance(info, dict) else None
-                          if not cache_key:
-                              continue
-                          poll_params = urllib.parse.urlencode({"airline": airline, "cache_key": cache_key})
-                          pstatus, ppayload = request_json(f"{base}/search_status?{poll_params}", headers=api_headers, timeout=100)
-                          calls_used += 1
-                          date_record["polled"][airline] = {"http_status": pstatus, "payload": ppayload}
-
-                  award_output["dates"][travel_date] = date_record
-                  time.sleep(0.75)
-
-              award_output["api_calls_used"] = calls_used
-
-          print("===AWARD_RESULTS_JSON_START===")
-          print(json.dumps(award_output, separators=(",", ":"), ensure_ascii=False))
-          print("===AWARD_RESULTS_JSON_END===")
-
-          # ---- Cash searches: live Google Flights via fast-flights ----
           from fast_flights import FlightData, Passengers, get_flights
 
-          skyteam_names = (
-              "delta", "air france", "klm", "saudia", "saudi arabian", "middle east airlines",
-              "virgin atlantic", "aeromexico", "aerolíneas argentinas", "aerolineas argentinas",
-              "china airlines", "china eastern", "garuda", "kenya airways", "korean air",
-              "sas", "scandinavian airlines", "tarom", "vietnam airlines", "xiamenair", "xiamen air"
-          )
+          start = dt.date(2026, 12, 25)
+          end = dt.date(2027, 1, 5)
+          dates = []
+          d = start
+          while d <= end:
+              dates.append(d.isoformat())
+              d += dt.timedelta(days=1)
 
-          def price_number(value):
-              m = re.search(r"[0-9][0-9,]*", str(value))
-              return int(m.group(0).replace(",", "")) if m else 10**9
+          started_at = dt.datetime.now(dt.timezone.utc).isoformat()
+          output = {
+              "source": "Google Flights via fast-flights",
+              "searched_at_utc": started_at,
+              "query": {
+                  "origin": "JED",
+                  "destination": "DTW",
+                  "start_date": dates[0],
+                  "end_date": dates[-1],
+                  "cabin": "Economy",
+                  "trip": "one-way",
+                  "max_stops": 2,
+              },
+              "dates": {},
+          }
 
-          cash_output = {"dates": {}}
-          for travel_date in DATES:
-              rec = {"skyteam_options": [], "all_options_count": 0}
+          for travel_date in dates:
+              record = {"all_options": []}
               try:
                   result = get_flights(
                       flight_data=[FlightData(date=travel_date, from_airport="JED", to_airport="DTW")],
                       trip="one-way",
                       seat="economy",
                       passengers=Passengers(adults=1, children=0, infants_in_seat=0, infants_on_lap=0),
-                      fetch_mode="common",
+                      fetch_mode="fallback",
                       max_stops=2,
                   )
-                  flights = [dataclasses.asdict(f) for f in result.flights]
-                  rec["google_price_level"] = result.current_price
-                  rec["all_options_count"] = len(flights)
-                  matches = []
-                  for flight in flights:
-                      label = str(flight.get("name", "")).lower()
-                      if any(name in label for name in skyteam_names):
-                          matches.append(flight)
-                  matches.sort(key=lambda f: price_number(f.get("price")))
-                  rec["skyteam_options"] = matches[:12]
-                  rec["all_options_sample"] = sorted(flights, key=lambda f: price_number(f.get("price")))[:5]
-              except Exception as e:
-                  rec["error"] = f"{type(e).__name__}: {e}"
-              cash_output["dates"][travel_date] = rec
+                  record["google_price_level"] = result.current_price
+                  record["all_options"] = [dataclasses.asdict(f) for f in result.flights]
+                  print(f"CASH_OK {travel_date} options={len(result.flights)}")
+              except Exception as exc:
+                  record["error"] = f"{type(exc).__name__}: {exc}"
+                  print(f"CASH_ERROR {travel_date} {record['error'][:300]}")
+              output["dates"][travel_date] = record
               time.sleep(1.0)
 
-          print("===CASH_RESULTS_JSON_START===")
-          print(json.dumps(cash_output, separators=(",", ":"), ensure_ascii=False))
-          print("===CASH_RESULTS_JSON_END===")
+          output["completed_at_utc"] = dt.datetime.now(dt.timezone.utc).isoformat()
+          Path("results/cash-google-flights.json").write_text(json.dumps(output, indent=2, ensure_ascii=False))
           PY
+
+      - name: Upload search results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jed-dtw-search-results
+          path: results/*.json
+          if-no-files-found: error
+          retention-days: 1
