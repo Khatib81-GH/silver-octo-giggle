@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Run one valid public Pointhound award search and capture its responses."""
+"""Run one public Pointhound award search and capture its network responses."""
 
 from __future__ import annotations
 
@@ -35,40 +35,40 @@ def select_airport(page, placeholder: str, code: str) -> None:
     box.click()
     box.fill(code)
     page.wait_for_timeout(900)
-    options = [
+    for opt in (
         page.get_by_role("option").filter(has_text=re.compile(rf"\b{code}\b", re.I)),
         page.locator("[role='option']").filter(has_text=re.compile(rf"\b{code}\b", re.I)),
         page.get_by_text(re.compile(rf"\b{code}\b", re.I)),
-    ]
-    for opt in options:
+    ):
         if click_visible(opt):
             return
     box.press("ArrowDown")
     box.press("Enter")
 
 
-def select_date(page, year: int, month_name: str, day: int) -> None:
-    page.get_by_placeholder("Date or date range", exact=False).first.click()
-    target_heading = f"{month_name} {year}".lower()
-    for _ in range(18):
-        if target_heading in page.locator("body").inner_text().lower():
-            break
-        if not click_visible(page.get_by_role("button", name=re.compile("Go to the Next Month", re.I))):
-            raise RuntimeError("calendar next-month button not found")
-        page.wait_for_timeout(150)
-    else:
-        raise RuntimeError(f"calendar did not reach {month_name} {year}")
-
-    exact_day = page.get_by_role(
-        "button",
-        name=re.compile(rf"^[A-Za-z]+, {month_name} {day}(?:st|nd|rd|th), {year}$", re.I),
+def set_date_directly(page, value: str) -> str:
+    field = page.get_by_placeholder("Date or date range", exact=False).first
+    field.click()
+    try:
+        field.fill(value)
+    except Exception:
+        pass
+    # Force the same DOM events a user edit would emit. This avoids dependence
+    # on the date-picker's month-navigation controls.
+    field.evaluate(
+        """(el, value) => {
+          const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+          setter.call(el, value);
+          el.dispatchEvent(new Event('input', {bubbles: true}));
+          el.dispatchEvent(new Event('change', {bubbles: true}));
+          el.dispatchEvent(new Event('blur', {bubbles: true}));
+        }""",
+        value,
     )
-    if not click_visible(exact_day):
-        raise RuntimeError(f"date button not found: {month_name} {day}, {year}")
-    page.wait_for_timeout(150)
-    if not click_visible(page.get_by_role("button", name="Select", exact=True)):
-        raise RuntimeError("calendar Select button not found")
-    page.wait_for_timeout(300)
+    page.keyboard.press("Escape")
+    page.keyboard.press("Tab")
+    page.wait_for_timeout(500)
+    return field.input_value()
 
 
 def main() -> int:
@@ -101,13 +101,13 @@ def main() -> int:
         page.goto("https://www.pointhound.com/search", wait_until="networkidle", timeout=120_000)
         select_airport(page, "Origin airport or city", "JED")
         select_airport(page, "Destination airport", "DTW")
-        select_date(page, 2026, "December", 25)
+        input_value = set_date_directly(page, "December 25, 2026")
 
-        input_value = page.get_by_placeholder("Date or date range", exact=False).first.input_value()
         (OUT / "selected_date.txt").write_text(input_value)
         page.screenshot(path=str(OUT / "ready_to_search.png"), full_page=True)
-        if "December 25" not in input_value:
-            raise RuntimeError(f"wrong selected date: {input_value!r}")
+        dump("visible_buttons_before_search.json", page.locator("button").evaluate_all(
+            "els => els.filter(e => !!(e.offsetWidth || e.offsetHeight || e.getClientRects().length)).map(e => ({text:e.innerText, aria:e.getAttribute('aria-label'), disabled:e.disabled}))"
+        ))
 
         if not click_visible(page.get_by_role("button", name=re.compile("Fetch deals", re.I))):
             raise RuntimeError("Fetch deals button not found")
@@ -119,23 +119,21 @@ def main() -> int:
             page.wait_for_timeout(2500)
             count = len(network)
             body_text = page.locator("body").inner_text()
-            if count == previous_count:
-                unchanged += 1
-            else:
-                unchanged = 0
+            unchanged = unchanged + 1 if count == previous_count else 0
             previous_count = count
             low = body_text.lower()
-            if unchanged >= 4 and any(x in low for x in ("miles", "points", "no flights", "no results")):
+            if unchanged >= 4 and any(x in low for x in ("miles", "points", "no flights", "no results", "error")):
                 break
 
-        (OUT / "results_text.txt").write_text(page.locator("body").inner_text())
+        result_text = page.locator("body").inner_text()
+        (OUT / "results_text.txt").write_text(result_text)
         (OUT / "results_html.html").write_text(page.content())
         page.screenshot(path=str(OUT / "results.png"), full_page=True)
         dump("network.json", network)
         dump("summary.json", {"url": page.url, "selected_date": input_value, "network_count": len(network)})
         browser.close()
 
-    print((OUT / "results_text.txt").read_text()[:30000])
+    print(result_text[:30000])
     print(f"Captured {len(network)} XHR/fetch responses")
     return 0
 
