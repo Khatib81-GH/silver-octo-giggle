@@ -5,14 +5,14 @@ on:
     branches:
       - tmp/jed-dtw-fares-20261012
     paths:
-      - pointhound_search.py
+      - pointhound_nodriver.py
       - .github/workflows/jed-dtw-fare-sweep.yml
 
 permissions:
   contents: read
 
 jobs:
-  pointhound-search:
+  pointhound-nodriver:
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
@@ -24,23 +24,23 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install Playwright Python package
-        run: python -m pip install playwright
+      - name: Install Chrome transport
+        run: python -m pip install 'nodriver==0.50.3' 'websockets>=14,<15'
 
-      - name: Search JED-DTW on Pointhound
+      - name: Probe Pointhound with undetected Chrome
         id: probe
         continue-on-error: true
-        run: xvfb-run -a python pointhound_search.py
+        run: xvfb-run -a python pointhound_nodriver.py
 
       - name: Ensure results directory exists
         if: always()
         run: mkdir -p results && printf '%s\n' "step_outcome=${{ steps.probe.outcome }}" > results/workflow_status.txt
 
-      - name: Upload Pointhound search
+      - name: Upload Pointhound probe
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: pointhound-search
+          name: pointhound-nodriver
           path: results/
           if-no-files-found: warn
           retention-days: 3
