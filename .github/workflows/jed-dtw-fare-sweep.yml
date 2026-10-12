@@ -5,6 +5,7 @@ on:
     branches:
       - tmp/jed-dtw-fares-20261012
     paths:
+      - cash_only.py
       - fare_sweep.py
       - fare_sweep_v2.py
       - .github/workflows/jed-dtw-fare-sweep.yml
@@ -13,7 +14,7 @@ permissions:
   contents: read
 
 jobs:
-  sweep:
+  cash-sweep:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
@@ -25,23 +26,23 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install search dependencies
-        run: python -m pip install --upgrade pip fast-flights typing_extensions pycryptodome requests
+      - name: Install cash-search parser and dependencies
+        run: python -m pip install --upgrade pip typing_extensions pycryptodome requests 'git+https://github.com/AWeirdDev/flights.git@dev'
 
-      - name: Run independent cash and award batches
+      - name: Retry cash source only, date by date
         id: sweep
         continue-on-error: true
-        run: python fare_sweep_v2.py
+        run: python cash_only.py
 
       - name: Ensure results directory exists
         if: always()
         run: mkdir -p results && printf '%s\n' "step_outcome=${{ steps.sweep.outcome }}" > results/workflow_status.txt
 
-      - name: Upload all successful and partial results
+      - name: Upload cash results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: jed-dtw-fares-2026-12-25-to-2027-01-05
+          name: jed-dtw-cash-2026-12-25-to-2027-01-05
           path: results/
           if-no-files-found: warn
           retention-days: 3
