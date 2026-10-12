@@ -1,0 +1,25 @@
+name: Temporary Pointhound route bundle
+on:
+  push:
+    branches: [tmp/jed-dtw-fares-20261012]
+    paths:
+      - scripts/pointhound_route_bundle.py
+      - .github/workflows/pointhound-route-bundle.yml
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - run: python -m pip install requests
+      - run: python scripts/pointhound_route_bundle.py
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pointhound-route-bundle-results
+          path: results/pointhound_route_bundle/
+          retention-days: 3
